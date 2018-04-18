@@ -1,0 +1,8 @@
+qs_create_rule.png
+qs_trigger_url.png
+browser_action_popup.png
+rule-details.png
+background-request-options.png
+foreground-request-options.png
+notification-options.png
+background-request-advanced-options.png
