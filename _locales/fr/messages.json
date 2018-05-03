@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Session Alive",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Gardez votre session active sur n'importe quel site Web et ne vous déconnectez jamais ...",
+    "description": "Description of the extension."
+  },
+  "settingsHeading": {
+    "message": "Préférences",
+    "description": "Settings heading."
+  },
+  "noRunningRulesInfo": {
+    "message": "Aucune règle n'est en cours d'exécution! Cliquez sur le bouton Préférences pour ajouter de nouvelles règles.",
+    "description": "No rules running info message."
+  },
+  "aliveDivTitle": {
+    "message": "Rechargement de page planifié pour garder la session en vie!",
+    "description": "Content Script Alive Div tool-tip."
+  },
+  "aliveDivContent": {
+    "message": "Cliquez pour répéter le rechargement de la page pendant 1 minute",
+    "description": "Content Script Alive Div mouse hover info message."
+  }
+}

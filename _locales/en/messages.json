@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Session Alive",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Keep your Session Alive at any website and never get logged out...",
+    "description": "Description of the extension."
+  },
+  "settingsHeading": {
+    "message": "Settings",
+    "description": "Settings heading."
+  },
+  "noRunningRulesInfo": {
+    "message": "No Rules are running! Click the Settings button to add new rules.",
+    "description": "No rules running info message."
+  },
+  "aliveDivTitle": {
+    "message": "Scheduled Page Reload to keep the Session Alive!",
+    "description": "Content Script Alive Div tool-tip."
+  },
+  "aliveDivContent": {
+    "message": "Click to snooze page reload for 1 minute",
+    "description": "Content Script Alive Div mouse hover info message."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Session Alive",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Houd je sessie levend op elke website en word nooit uitgelogd ...",
+    "description": "Description of the extension."
+  },
+  "settingsHeading": {
+    "message": "Einstellungen",
+    "description": "Settings heading."
+  },
+  "noRunningRulesInfo": {
+    "message": "Er zijn geen regels actief! Klik op de knop Einstellungen om nieuwe regels toe te voegen.",
+    "description": "No rules running info message."
+  },
+  "aliveDivTitle": {
+    "message": "Geplande pagina Opnieuw laden om de sessie levendig te houden!",
+    "description": "Content Script Alive Div tool-tip."
+  },
+  "aliveDivContent": {
+    "message": "Klik om de pagina opnieuw in te sluimeren gedurende 1 minuut",
+    "description": "Content Script Alive Div mouse hover info message."
+  }
+}

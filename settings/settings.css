@@ -1,0 +1,145 @@
+body {
+    font-family: 'Segoe UI', 'San Francisco', 'Ubuntu', sans-serif;
+    background: #f9f9fa;
+}
+
+a, a:hover, a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.card-header{
+    cursor: pointer;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #0a84ff;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+}
+
+#sidebar-collapse {
+    left: 0px;
+    background: #000f40;
+    color: #fff;
+    padding: 0px 3px;
+    border: none;
+}
+
+#sidebar .sidebar-header #preferences {
+    display: none;
+}
+
+#sidebar.active .sidebar-header #preferences {
+    display: block;
+}
+
+#sidebar.active .sidebar-header span, #sidebar.active span, #sidebar.active #icon {
+    display: none;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #000f40;
+}
+
+#sidebar ul.components {
+    counter-reset: section;
+}
+
+#sidebar ul.components li a::before {
+  counter-increment: section;
+  content: counter(section)". ";
+}
+
+#sidebar ul.components {
+    padding: 0;
+    border-bottom: 1px solid #000f40;
+}
+
+#sidebar ul li a {
+    text-align: left;
+    padding: 10px;
+    display: block;
+}
+
+#sidebar.active ul li a {
+    text-align: center;
+    padding: 5px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    outline:0 !important;
+}
+
+#sidebar ul li a:hover {
+    color: #0a84ff;
+    background: #fff;
+}
+
+ul.CTAs {
+    padding: 0px 20px 0px 20px;
+}
+
+a.create-rule {
+    background: #fff;
+    color: #000f40;
+    border-radius: 5px;
+}
+
+#sidebar-collapse { outline:0 !important; }
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+#content {
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+}
+
+#save-success {
+    display: none;
+    max-height: 4em;
+}
+
+#delete-success {
+    display: none;
+    max-height: 4em;
+}
+
+#rule-editor {
+    display: none;
+}
+
+#rule-info {
+    max-height: 5em;
+}
+
+#sound_test { outline:0 !important; }
