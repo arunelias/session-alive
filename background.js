@@ -98,7 +98,7 @@ function handleStorageChange() {
 function handleRunningRules(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, fg_loopUriVal, headRequest, reloadSound;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound;
   uri = tab.url.replace(/\/$/, '').toLowerCase();
   totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
   if (totRunningRules === 0) { return null; }
@@ -106,6 +106,7 @@ function handleRunningRules(tab) {
   for (var key in runningRules) {
     if (runningRules.hasOwnProperty(key)) {
       loopUriVal =  (runningRules[key].loop_uri && runningRules[key].loop_uri !== "") ? runningRules[key].loop_uri : runningRules[key].trigger_uri;
+      bg_triggerUriVal = runningRules[key].trigger_uri;
       fg_loopUriVal =  runningRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase();
       // Check rule is already running in another tab or not
       if (runningRules[key].runMode == "foreground" && fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0) {
@@ -170,7 +171,7 @@ function handleRunningRules(tab) {
 function handleInitializeMsg(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, fg_loopUriVal, headRequest, reloadSound;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound;
   //Handle Running Rules
   responseMsg = handleRunningRules(tab);
   if (responseMsg) {return responseMsg;}
@@ -181,6 +182,7 @@ function handleInitializeMsg(tab) {
       if (aliveRules[key].rule_disable) { break; }
       // Fetch Loop URL for URI matching
       loopUriVal =  (aliveRules[key].loop_uri && aliveRules[key].loop_uri !== "") ? aliveRules[key].loop_uri : aliveRules[key].trigger_uri;
+      bg_triggerUriVal = aliveRules[key].trigger_uri;
       fg_loopUriVal =  aliveRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase();
       //Match URI with the Loop URI of the Rule
       if (fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0) {
@@ -209,7 +211,7 @@ function handleInitializeMsg(tab) {
         return responseMsg;
       }
 
-      if (loopUriVal !== "" && loopUriVal.replace(/\/$/, '').toLowerCase() == uri) {
+      if (bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri) {
         headRequest = aliveRules[key].bg_head_only;
         // Loop Uri found in the Tab with Background Rule Match -> Preference to Foreground Rule
         timeoutVal = parseInt(aliveRules[key].loop_interval, 10);
@@ -261,7 +263,7 @@ function handleAjax(tab){
         timeoutVal = parseInt(runningRules[key].loop_interval, 10);
         if (isNaN(timeoutVal) || timeoutVal === 0) { return invalidMsg; }//NaN or Zero Encountered - Return Invalid
         //Check the Response is Valid or Not
-        if (tab.status === 200 && ajaxResponseUrl == loopUriVal.replace(/\/$/, '').toLowerCase()) {
+        if (runningRules[key].loop_exit_200 === false || (tab.status === 200 && ajaxResponseUrl == loopUriVal.replace(/\/$/, '').toLowerCase())) {
           responseMsg = {
             response: "Run background rule",
             run: "background",
@@ -376,7 +378,7 @@ browser.storage.onChanged.addListener(handleStorageChange);
 ** Open Options page on Install & Update
 */
 browser.runtime.onInstalled.addListener(function (details) {
-  browser.runtime.openOptionsPage();
+  if (details.reason == "install" || details.reason == "update") {browser.runtime.openOptionsPage();}
   if (details.reason == "install") {
     var notificationMessage = "Thanks for installing Session Alive extension! Create a rule to keep your Session Alive!";
     displayNotifications({title: "Session Alive Installed",message: notificationMessage});

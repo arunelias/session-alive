@@ -2,6 +2,7 @@
 ** Content Script - Session Alive
 */
 var aliveDiv;
+var aliveDivInfo;
 var idTimer;
 /*
  * Count-down function [Foreground]
@@ -15,7 +16,7 @@ startCountdown = function updateCounter(rule) {
 	var seconds = (timeout || timeout === 0) ? timeout : 30;
 	var reloadBeep = rule.beepEnabled;
 	if (seconds >= 0) {
-		if(seconds < 30) {aliveDiv.style.display = "block";}
+		if(seconds < 30) {aliveDiv.style.display = "block"; aliveDivInfo.style.display = "";}
 		if (aliveDiv.style.display !== "none") {
 			var counter = document.getElementById("session_alive_extn_countdown");
 			if (counter) {
@@ -40,6 +41,7 @@ startCountdown = function updateCounter(rule) {
 				window.location.reload(true);
 			});
 			aliveDiv.style.display = "none";
+			aliveDivInfo.style.display = "none";
 		}
 	}
 };
@@ -66,36 +68,9 @@ var scheduleRule = function (rule) {
 };
 
 /*
-** Handle Response from Background Script
+** Initialize Session Alive Elements in page
 */
-function handleResponse(message) {
-  console.log("Background Script => Content Script: " + message.response);
-  var intTimeout;
-  if (message.run=="foreground") {
-  	//aliveDiv.style.display = "block";
-  	intTimeout = parseInt(message.timeout, 10);
-  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer);/* Clear any Running Timer to prevent overlapping*/ }
-  	startCountdown({rule_id:message.rule_id, timeout:intTimeout, beepEnabled:message.beepEnabled});
-  }
-  if (message.run=="background") {
-  	intTimeout = parseInt(message.timeout, 10);
-  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer);/* Clear any Running Timer to prevent overlapping*/ }
-  	scheduleRule({rule_id:message.rule_id, timeout:intTimeout, loopUri:message.loopUri, headRequestOnly:message.headRequestOnly});
-  }
-  if (message.run=="cancel") {
-  	//Cancel Running Rule
-  	aliveDiv.style.display = "none";
-  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer); }
-  }
-}
-// Handle Response Error
-function handleError(error) {console.error("Error: " + error);}
-
-/*
-** Content Script initialize
-*/
-function init(){
-	console.log("Initializing content script");
+function initAliveElements() {
 	var aliveElement, soundFile, title, content;
 	aliveDiv = document.createElement("div");
 	aliveDiv.id = "session_alive_extn_timer";
@@ -113,27 +88,61 @@ function init(){
 	//Event Listner for click on div
 	aliveDiv.addEventListener("click", function () {//Snooze for 1 minute
 		aliveDiv.style.display = "none";
+		aliveDivInfo.style.display = "none";
 		clearTimeout(idTimer);
 		startCountdown({timeout: 60});
 	});
 	document.body.appendChild(aliveDiv);
 	//Snooze info mouse hover display Element
-	aliveElement = document.createElement("div");
-	aliveElement.id = "session_alive_extn_info";
+	aliveDivInfo = document.createElement("div");
+	aliveDivInfo.id = "session_alive_extn_info";
+	aliveDivInfo.style.display = "none";
 	// Apply localized/translated strings
 	try { content = browser.i18n.getMessage("aliveDivContent"); }
 	catch(e) { content = "Click to snooze page reload for 1 minute"; }
-	aliveElement.textContent = content;
-	document.body.appendChild(aliveElement);
+	aliveDivInfo.textContent = content;
+	document.body.appendChild(aliveDivInfo);
 	//Sound Element for beep defore reload
 	soundFile = browser.extension.getURL("beep.wav");
 	aliveElement = document.createElement("audio");
 	aliveElement.id = "sound_element";
 	aliveElement.setAttribute("src", soundFile);
 	document.body.appendChild(aliveElement);
-	/*
-	** Send Content Script Initialize message to Background Script
-	*/
+}
+
+/*
+** Handle Response from Background Script
+*/
+function handleResponse(message) {
+  console.log("Background Script => Content Script: " + message.response);
+  var intTimeout;
+  if (message.run=="foreground") {
+  	//aliveDiv.style.display = "block";
+  	initAliveElements();
+  	intTimeout = parseInt(message.timeout, 10);
+  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer);/* Clear any Running Timer to prevent overlapping*/ }
+  	startCountdown({rule_id:message.rule_id, timeout:intTimeout, beepEnabled:message.beepEnabled});
+  }
+  if (message.run=="background") {
+  	intTimeout = parseInt(message.timeout, 10);
+  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer);/* Clear any Running Timer to prevent overlapping*/ }
+  	scheduleRule({rule_id:message.rule_id, timeout:intTimeout, loopUri:message.loopUri, headRequestOnly:message.headRequestOnly});
+  }
+  if (message.run=="cancel") {
+  	//Cancel Running Rule
+  	aliveDiv.style.display = "none";
+  	aliveDivInfo.style.display = "none";
+  	if (typeof idTimer !== "undefined") { clearTimeout(idTimer); }
+  }
+}
+// Handle Response Error
+function handleError(error) {console.error("Error: " + error);}
+
+/*
+** Content Script initialize
+*/
+function init(){
+	console.log("Initializing content script");
 	var sending = browser.runtime.sendMessage({event: "Initialize"});
 	sending.then(handleResponse, handleError);
 }

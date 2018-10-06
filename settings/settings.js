@@ -31,9 +31,10 @@ function setItem() {
   console.log("Store Settings Successful!");
   //Update UI
   var refreshSettings = browser.storage.local.get();
-  refreshSettings.then(updateUI, onError);
-  document.getElementById("rule-editor").style.display = "none";
-  document.getElementById("save-success").style.display = "block";
+  refreshSettings.then(updateUI, onError).then(function() {
+    document.getElementById("rule-editor").style.display = "none";
+    document.getElementById("save-success").style.display = "block";
+  });
 }
 /*
 ** Deletion of the Rule Successful - and Refresh the UI
@@ -42,9 +43,10 @@ function removedItem() {
   console.log("Delete Settings Successful!");
   //Update UI
   var refreshSettings = browser.storage.local.get();
-  refreshSettings.then(updateUI, onError);
-  document.getElementById("rule-editor").style.display = "none";
-  document.getElementById("delete-success").style.display = "block";
+  refreshSettings.then(updateUI, onError).then(function() {
+    document.getElementById("rule-editor").style.display = "none";
+    document.getElementById("delete-success").style.display = "block";
+  });
 }
 /*
 ** Add New Rule
@@ -175,13 +177,15 @@ function updateUI(aliveSettings) {
   var totRules = Object.keys(aliveSettings).length;//Get No. of Rules
   //If No Rules display the editor
   if (totRules === 0) {
+    window.location.hash = '#';
     addNewRule();
     return null;
   }
 	// Iterate through the keys in {aliveSettings} Object
 	for (var key in aliveSettings) {
     if (aliveSettings.hasOwnProperty(key)) {
-      console.log(key + " -> " + aliveSettings[key]);
+      console.log("Settings id: " + key + " -> ");
+      console.log(aliveSettings[key]);
       var aliveRule = document.createElement("li");
       var aliveRuleLink = document.createElement("a");
       aliveRuleLink.href = "#";
