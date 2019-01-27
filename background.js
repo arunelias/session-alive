@@ -179,7 +179,7 @@ function handleInitializeMsg(tab) {
   // Iterate through the keys in aliveRules Object
   for (var key in aliveRules) {
     if (aliveRules.hasOwnProperty(key)) {
-      if (aliveRules[key].rule_disable) { break; }
+      if (aliveRules[key].rule_disable) { continue; }
       // Fetch Loop URL for URI matching
       loopUriVal =  (aliveRules[key].loop_uri && aliveRules[key].loop_uri !== "") ? aliveRules[key].loop_uri : aliveRules[key].trigger_uri;
       bg_triggerUriVal = aliveRules[key].trigger_uri;
