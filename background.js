@@ -112,7 +112,7 @@ function handleRunningRules(tab) {
       if (runningRules[key].runMode == "foreground" && fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0) {
         if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
-      if (runningRules[key].runMode == "background" && loopUriVal !== "" && loopUriVal == uri) {
+      if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri) {
         if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
       //Confirm call is from the tab which is Running the Rule
