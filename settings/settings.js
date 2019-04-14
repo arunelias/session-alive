@@ -22,6 +22,8 @@ const notifBgrequestInput = document.getElementById("notif_bgrequest");
 const notifBgexitInput = document.getElementById("notif_bgexit");
 const notifFgreloadInput = document.getElementById("notif_fgreload");
 const notifFgexitInput = document.getElementById("notif_fgexit");
+
+const triggerUriLink = document.getElementById("trigger_uri_link");
 // Generic Error logger
 function onError(e) { console.error("Error: " + e); }
 /*
@@ -82,6 +84,8 @@ function storeSettings() {
 
   parsed = parseInt(fgIntervalInput.value, 10);
   fg_interval_value = (isNaN(parsed) || parsed === 0) ? "" : parsed;
+
+  triggerUriLink.href = (fgTriggerUriInput.value && fgTriggerUriInput.value !== "") ? fgTriggerUriInput.value : triggerUriInput.value;
   // Keep the URL as in format given as URL can contain base64 encoded strings
   aliveSettings = {
     rule_name: ruleNameInput.value,

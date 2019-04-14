@@ -126,7 +126,7 @@ a.create-rule {
 
 #save-success {
     display: none;
-    max-height: 4em;
+    max-height: 9em;
 }
 
 #delete-success {
