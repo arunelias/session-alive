@@ -77,7 +77,7 @@
                                     <div class="card-body form-group mb-0">
                                         <label for="trigger_uri" class="mb-0">Trigger URL:</label>
                                         <input type="url" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="https?://.+">
-                                        <div class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
+                                        <div id="trigger_uri_fb" class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
                                         <div class="text-secondary small">Navigating to this URL will start the background request loop.</div>
 
                                         <label for="loop_uri"  class="pt-3 mb-0">Background Request URL: <span class="badge badge-pill badge-info">Optional</span></label>
@@ -136,7 +136,7 @@
                                     <div class="card-body form-group mb-0">
                                         <label for="fg_trigger_uri" class="mb-0">Foreground Auto-Reload Trigger URL:</label>
                                         <input type="url" class="form-control" id="fg_trigger_uri" placeholder="Foreground Auto-Reload Trigger URL. eg: https://example.com/user/" pattern="https?://.+">
-                                        <div class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
+                                        <div id="fgTriggerUriFb" class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
                                         <div class="text-secondary text-justify small">Some websites implements JavaScript idle timer in browser also. For this websites requesting the page in background will not be enough to keep the session alive. The page needs to reload to keep the session. Navigating to a any URL starting with the Trigger URL will start the foreground page reload loop. For example Trigger URL is set to <code>https://example.com/user/</code>, navigating to <code>https://example.com/user/profile</code> or <code>https://example.com/user/account/details</code> will set to auto reload in the set interval</div>
 
                                         <label for="fg_interval"  class="pt-3 mb-0">Foreground Auto-Reload Interval (in minutes):</label>

@@ -1,3 +1,4 @@
+var aliveRules = {};
 /*
 ** Get Elements in Page
 */
@@ -24,6 +25,7 @@ const notifFgreloadInput = document.getElementById("notif_fgreload");
 const notifFgexitInput = document.getElementById("notif_fgexit");
 
 const triggerUriLink = document.getElementById("trigger_uri_link");
+const triggerUriFb = document.getElementById("trigger_uri_fb")
 // Generic Error logger
 function onError(e) { console.error("Error: " + e); }
 /*
@@ -173,6 +175,7 @@ function updateEditor(aliveSettings) {
  * @param {aliveSettings} aliveSettings Object contains settings of selected rule
 */
 function updateUI(aliveSettings) {
+  aliveRules = aliveSettings;
 	var ruleListingNode = document.getElementById("rule-listing");
 	// Clear the listing by removing nodes
   while (ruleListingNode.lastChild) {
@@ -248,7 +251,22 @@ triggerUriInput.addEventListener("blur", function( event ) {
 	if(event.target.value !== "") {// If Background Trigger URL is provided, Background Interval is required
     loopIntervalInput.setAttribute("required","required");
   }
-	else {loopIntervalInput.removeAttribute("required");}
+  else {loopIntervalInput.removeAttribute("required");}
+  /* Duplicate URL Checking */
+  for (var key in aliveRules) {
+    if (aliveRules.hasOwnProperty(key)) {
+      if (aliveRules[key].rule_disable || key == ruleIdInput.value) { continue; }
+      if(event.target.value !== "" && event.target.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase()) {
+        triggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
+        triggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
+        break;
+      }
+      else { // Clear the Custom Validity Check
+        triggerUriInput.setCustomValidity("");
+        triggerUriFb.innerHTML = 'Valid trigger URL (including "http://" or "https://") is required.';
+      }
+    }
+  }
 }, true);
 /*
 ** Add Event Listener On blur event of Foreground Auto-Reload Trigger URL input.
@@ -257,6 +275,7 @@ fgTriggerUriInput.addEventListener("blur", function( event ) {
 	if(event.target.value !== "") {// If Foreground Auto-Reload Trigger URL is provided, Foreground Interval is required
     fgIntervalInput.setAttribute("required","required");
     triggerUriInput.removeAttribute("required");
+    triggerUriInput.setCustomValidity("");
     loopIntervalInput.removeAttribute("required");
   }
 	else {//Reset required attributes if cleared
@@ -264,7 +283,47 @@ fgTriggerUriInput.addEventListener("blur", function( event ) {
     triggerUriInput.setAttribute("required","required");
     loopIntervalInput.setAttribute("required","required");
   }
+  /* Duplicate URL Checking */
+  for (var key in aliveRules) {
+    if (aliveRules.hasOwnProperty(key)) {
+      if (aliveRules[key].rule_disable || key == ruleIdInput.value) { continue; }
+      if(event.target.value !== "" && event.target.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase()) {
+        fgTriggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
+        fgTriggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
+        break;
+      }
+      else { // Clear the Custom Validity Check
+        fgTriggerUriInput.setCustomValidity("");
+        fgTriggerUriFb.innerHTML = 'Valid trigger URL (including "http://" or "https://") is required.';
+      }
+    }
+  }
 }, true);
+/*
+** Add Event Listener change event of Disable Rule check-box
+*/
+ruleDisableInput.addEventListener("change", function( event ) {
+  if (!event.target.checked) {
+    for (var key in aliveRules) {
+      if (aliveRules.hasOwnProperty(key)) {
+        if (aliveRules[key].rule_disable || key == ruleIdInput.value) { continue; }
+        if(fgTriggerUriInput.value !== "" && fgTriggerUriInput.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase()) {
+          fgTriggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
+          fgTriggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
+          break;
+        }
+        if(triggerUriInput.value !== "" && triggerUriInput.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase()) {
+          triggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
+          triggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
+          break;
+        }
+      }
+    }
+  } else {
+    fgTriggerUriInput.setCustomValidity("");
+    triggerUriInput.setCustomValidity("");
+  }
+},true);
 // Add Event Listener - Sidebar Collapse - Toggle
 document.getElementById("sidebar-collapse").addEventListener("click", function() {
   document.getElementById("sidebar").classList.toggle("active");
