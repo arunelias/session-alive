@@ -87,7 +87,12 @@ function storeSettings() {
   parsed = parseInt(fgIntervalInput.value, 10);
   fg_interval_value = (isNaN(parsed) || parsed === 0) ? "" : parsed;
 
-  triggerUriLink.href = (fgTriggerUriInput.value && fgTriggerUriInput.value !== "") ? fgTriggerUriInput.value : triggerUriInput.value;
+  if (ruleDisableInput.checked) {
+    document.getElementById("save-success-next-step").style.display = "none";
+  } else {
+    document.getElementById("save-success-next-step").style.display = "block";
+    triggerUriLink.href = (fgTriggerUriInput.value && fgTriggerUriInput.value !== "") ? fgTriggerUriInput.value : triggerUriInput.value;
+  }
   // Keep the URL as in format given as URL can contain base64 encoded strings
   aliveSettings = {
     rule_name: ruleNameInput.value,
