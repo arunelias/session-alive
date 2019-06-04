@@ -260,7 +260,7 @@ triggerUriInput.addEventListener("blur", function( event ) {
   /* Duplicate URL Checking */
   for (var key in aliveRules) {
     if (aliveRules.hasOwnProperty(key)) {
-      if (aliveRules[key].rule_disable || key == ruleIdInput.value) { continue; }
+      if (aliveRules[key].rule_disable || key == ruleIdInput.value || ruleDisableInput.checked) { continue; }
       if(event.target.value !== "" && event.target.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase()) {
         triggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
         triggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
@@ -291,7 +291,7 @@ fgTriggerUriInput.addEventListener("blur", function( event ) {
   /* Duplicate URL Checking */
   for (var key in aliveRules) {
     if (aliveRules.hasOwnProperty(key)) {
-      if (aliveRules[key].rule_disable || key == ruleIdInput.value) { continue; }
+      if (aliveRules[key].rule_disable || key == ruleIdInput.value || ruleDisableInput.checked) { continue; }
       if(event.target.value !== "" && event.target.value.replace(/\/$/, '').toLowerCase() == aliveRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase()) {
         fgTriggerUriInput.setCustomValidity("This URL is already used in another Rule! Please disable or delete that Rule first.");
         fgTriggerUriFb.innerHTML = 'This URL is already used in another Rule! Please disable or delete that Rule first.';
