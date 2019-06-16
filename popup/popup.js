@@ -1,3 +1,4 @@
+var contextualIdentities = {};
 /*
  * Add Event Listner for Close button
 */
@@ -46,22 +47,39 @@ function handleRunningRules(rules) {
         //console.log(key + " -> " + runningRules[key]);
         	aliveRuleRow = document.createElement('tr');
         	//Rule Name <td>
-        	aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData.className = "rule-name-td";
           aliveRuleRowData.textContent = runningRules[key].rule_name;
         	aliveRuleRowData.title = runningRules[key].run_uri;
-        	aliveRuleRow.appendChild(aliveRuleRowData);
-        	//Interval <td>
-        	if (runningRules[key].runMode == "foreground") { timeoutVal = parseInt(runningRules[key].fg_interval, 10); }
-        	else if (runningRules[key].runMode == "background") { timeoutVal = parseInt(runningRules[key].loop_interval, 10); };
-        	aliveRuleRowData = document.createElement('td');
-        	aliveRuleRowData.textContent = timeoutVal.toString() + " m"
+          aliveRuleRow.appendChild(aliveRuleRowData);
+          //contextualIdentities <td>
+          aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData.className = "rule-usercontext-td";
+          if (contextualIdentities.length && runningRules[key].cookieStoreId) {
+            for (let identity of contextualIdentities) {
+              if (identity.cookieStoreId == runningRules[key].cookieStoreId) {
+                aliveRuleRowData.title = identity.name;
+                aliveRuleRowData.style.backgroundImage = `url("${identity.iconUrl}")`;
+                aliveRuleRowData.style.fill = identity.color;
+                aliveRuleRowData.dataset.identityColor = identity.color;
+              }
+            }
+          }
+          aliveRuleRow.appendChild(aliveRuleRowData);
+          //Interval <td>
+          aliveRuleRowData = document.createElement('td');
+        	if (runningRules[key].runMode == "foreground") { aliveRuleRowData.title = "Foreground Rule Interval"; timeoutVal = parseInt(runningRules[key].fg_interval, 10); }
+        	else if (runningRules[key].runMode == "background") { aliveRuleRowData.title = "Background Rule Interval"; timeoutVal = parseInt(runningRules[key].loop_interval, 10); }
+        	aliveRuleRowData.textContent = timeoutVal.toString() + " m";
         	aliveRuleRow.appendChild(aliveRuleRowData);
         	//LastRun <td>
-        	aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData.title = "Rule Last Run Time";
         	aliveRuleRowData.textContent = runningRules[key].last_run;
         	aliveRuleRow.appendChild(aliveRuleRowData);
         	//Run Count <td>
-        	aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData = document.createElement('td');
+          aliveRuleRowData.title = "Rule Run Count";
         	aliveRuleRowData.textContent = runningRules[key].run_count;
         	aliveRuleRow.appendChild(aliveRuleRowData);
         	//Cancel button <td>
@@ -108,15 +126,29 @@ function handleUpdated(tabId, changeInfo, tabInfo) {
   browser.runtime.sendMessage({event: "Running-rules"});
 }
 /*
+ * Contextual Identities initialize
+ * @param {} nil 
+*/
+function initIdentities() {
+  if (browser.contextualIdentities !== undefined) {
+    browser.contextualIdentities.query({}).then((identities) => {
+      if (!identities.length) { console.log("contextualIdentities: No identities returned from the API."); }
+      else { contextualIdentities = identities; }
+    });
+  }
+}
+/*
  * Popup Script initialize
  * @param {} nil 
 */
 function initPopup() {
+  //Initialize Contextual Identities
+  initIdentities();
 	//Request Running rules details from background script
   browser.runtime.sendMessage({event: "Running-rules"});
   // Apply localized/translated strings
   translate();
-};
+}
 /*
 ** Add Listener to Handle the message from Content Script
 */

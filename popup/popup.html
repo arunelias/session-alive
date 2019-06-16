@@ -11,7 +11,7 @@
     <link href="popup.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
+    <div class="container-fluid">
       <!-- Settings Row -->
       <div class="row">
         <div class="col-6 text-left"><button id="settings" class="btn btn-primary btn-sm m-1" data-translate="settingsHeading">Settings</button></div>
@@ -24,16 +24,18 @@
           <table id="rules-table" class="table table-hover table-sm small">
             <thead>
               <tr>
-                <th>Rule</th>
+                <th class="rule-name-th">Rule</th>
+                <th class="rule-usercontext-th">&nbsp;</th>
                 <th>Interval</th>
-                <th>Last Run</th>
+                <th>Last&nbsp;Run</th>
                 <th>Count</th>
                 <th>Cancel</th>
               </tr>
             </thead>
             <tbody id="running-rule-listing">
               <tr>
-                <td title="https://example.com">Rule-1</td>
+                <td class="rule-name-td" title="https://example.com">Rule-1</td>
+                <td class="rule-usercontext-td">&nbsp;</td>
                 <td>5 m</td>
                 <td>00:00 AM</td>
                 <td>999</td>

@@ -5,6 +5,21 @@ body {
 tr {
 	background: #fff;
 }
+.rule-name-th, .rule-name-td {
+	padding: 0px 0px 0px 20px !important;
+}
+.rule-usercontext-th {
+	padding: 0px !important;
+}
+.rule-usercontext-td {
+	padding: 0px !important;
+	width: 20px;
+	background-position: left top;
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	fill: attr(data-identity-color);
+	filter: url("filters.svg#fill")
+}
 th, td {
 	padding: 0px 20px !important;
 }

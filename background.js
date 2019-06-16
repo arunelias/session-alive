@@ -98,8 +98,9 @@ function handleStorageChange() {
 function handleRunningRules(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId;
   uri = tab.url.replace(/\/$/, '').toLowerCase();
+  tab_cookieStoreId = (tab.cookieStoreId === undefined) ? "" : tab.cookieStoreId;
   totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
   if (totRunningRules === 0) { return null; }
   // Iterate through the keys in runningRules Object
@@ -109,10 +110,10 @@ function handleRunningRules(tab) {
       bg_triggerUriVal = runningRules[key].trigger_uri;
       fg_loopUriVal =  runningRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase();
       // Check rule is already running in another tab or not
-      if (runningRules[key].runMode == "foreground" && fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0) {
+      if (runningRules[key].runMode == "foreground" && fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0 && runningRules[key].cookieStoreId == tab_cookieStoreId) {
         if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
-      if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri) {
+      if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri && runningRules[key].cookieStoreId == tab_cookieStoreId) {
         if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
       //Confirm call is from the tab which is Running the Rule
@@ -141,7 +142,7 @@ function handleRunningRules(tab) {
         }
       }
       if (runningRules[key].tabId == tab.id && runningRules[key].runMode == "background") {
-        headRequest = aliveRules[key].bg_head_only;
+        headRequest = runningRules[key].bg_head_only;
         //Tab Id found with Background Run Mode
         timeoutVal = parseInt(runningRules[key].loop_interval, 10);
         if (isNaN(timeoutVal) || timeoutVal === 0) { return invalidMsg; }//NaN or Zero Encountered - Return Invalid
@@ -171,11 +172,12 @@ function handleRunningRules(tab) {
 function handleInitializeMsg(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId;
   //Handle Running Rules
   responseMsg = handleRunningRules(tab);
   if (responseMsg) {return responseMsg;}
   uri = tab.url.replace(/\/$/, '').toLowerCase();
+  tab_cookieStoreId = (tab.cookieStoreId === undefined) ? "" : tab.cookieStoreId;
   // Iterate through the keys in aliveRules Object
   for (var key in aliveRules) {
     if (aliveRules.hasOwnProperty(key)) {
@@ -200,12 +202,13 @@ function handleInitializeMsg(tab) {
           beepEnabled: reloadSound
         };
         // Add aliveRules(key) to RunningRules(Key)
-        runningRules[key] = aliveRules[key];
-        runningRules[key].tabId = tab.id;
-        runningRules[key].runMode = "foreground";
-        runningRules[key].run_uri = fg_loopUriVal;
-        runningRules[key].run_count = 0;
-        runningRules[key].last_run = "";
+        runningRules[key+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
+        runningRules[key+tab_cookieStoreId].tabId = tab.id;
+        runningRules[key+tab_cookieStoreId].runMode = "foreground";
+        runningRules[key+tab_cookieStoreId].run_uri = fg_loopUriVal;
+        runningRules[key+tab_cookieStoreId].run_count = 0;
+        runningRules[key+tab_cookieStoreId].last_run = "";
+        runningRules[key+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
         //Update Browser Badge
         updateBadge();
         return responseMsg;
@@ -226,12 +229,13 @@ function handleInitializeMsg(tab) {
           headRequestOnly: headRequest
         };
         // Add aliveRules(key) to RunningRules(Key)
-        runningRules[key] = aliveRules[key];
-        runningRules[key].tabId = tab.id;
-        runningRules[key].runMode = "background";
-        runningRules[key].run_uri = loopUriVal;
-        runningRules[key].run_count = 0;
-        runningRules[key].last_run = "";
+        runningRules[key+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
+        runningRules[key+tab_cookieStoreId].tabId = tab.id;
+        runningRules[key+tab_cookieStoreId].runMode = "background";
+        runningRules[key+tab_cookieStoreId].run_uri = loopUriVal;
+        runningRules[key+tab_cookieStoreId].run_count = 0;
+        runningRules[key+tab_cookieStoreId].last_run = "";
+        runningRules[key+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
         //Update Browser Badge
         updateBadge();
         return responseMsg;
@@ -375,15 +379,28 @@ gettingStoredSettings.then(updateRules, onError);
 */
 browser.storage.onChanged.addListener(handleStorageChange);
 /*
-** Open Options page on Install & Update
+** Open onboarding and upboarding page
 */
 browser.runtime.onInstalled.addListener(function (details) {
-  if (details.reason == "install" || details.reason == "update") {browser.runtime.openOptionsPage();}
-  if (details.reason == "install") {
-    var notificationMessage = "Thanks for installing Session Alive extension! Create a rule to keep your Session Alive!";
-    displayNotifications({title: "Session Alive Installed",message: notificationMessage});
+  switch (details.reason) {
+    case "install": {
+      const url = browser.runtime.getURL("views/installed.html");
+      browser.tabs.create({ url: url, active: true});
+      var notificationMessage = "Thanks for installing Session Alive extension! Create a rule to keep your Session Alive!";
+      displayNotifications({title: "Session Alive Installed",message: notificationMessage});
+    } break;
+    case "update": {
+      const url = browser.runtime.getURL("views/updated.html");
+      browser.tabs.create({ url: url, active: true});
+    } break;
+    default:
+    //Default Switch - No Action";
   }
 });
+/*
+** Open feedback page for offboarding users
+*/
+browser.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link");
 /*
 ** Add Listener to handle Notification click
 */

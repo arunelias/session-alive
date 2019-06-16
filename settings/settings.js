@@ -25,7 +25,7 @@ const notifFgreloadInput = document.getElementById("notif_fgreload");
 const notifFgexitInput = document.getElementById("notif_fgexit");
 
 const triggerUriLink = document.getElementById("trigger_uri_link");
-const triggerUriFb = document.getElementById("trigger_uri_fb")
+const triggerUriFb = document.getElementById("trigger_uri_fb");
 // Generic Error logger
 function onError(e) { console.error("Error: " + e); }
 /*

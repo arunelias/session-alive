@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
-    "version": "1.2",
+    "version": "2.0",
     "homepage_url": "https://github.com/arunelias/session-alive",
     "icons": {
         "16": "assets/icon/icon.svg",
@@ -11,7 +11,13 @@
         "64": "assets/icon/icon.svg",
         "128": "assets/icon/icon.svg"
     },
-    "permissions": ["tabs", "notifications", "storage"],
+    "applications": {
+        "gecko": {
+            "id": "{15060491-2b35-49f4-9f01-f35b127bebcc}",
+            "strict_min_version": "57.0"
+      }
+    },
+    "permissions": ["tabs", "notifications", "storage", "contextualIdentities", "cookies"],
     "background":{
         "scripts": ["background.js"]
     },
