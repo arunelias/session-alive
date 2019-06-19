@@ -38,7 +38,7 @@ Navigate to the Trigger URL in a new tab.
 --------------
 
 ## Main view (Information Pop-up)
-<img src="readme-resources/screenshots/browser_action_popup.png">
+<img src="readme-resources/screenshots/Popup.png">
 
 The *Main view* is the informational page of the add-on where you can view the currently running *Rules*. Click the Settings button to open the Session Alive Settings page. 
 
@@ -118,7 +118,7 @@ Browser Notifications can be set here for the following conditions:
 - **Page is auto-reloading to keep session alive:**  
 - **Foreground Page auto-reload stopped:**  
 
-#### Background Request Advanced Options
+#### Background Request Advanced Options (To be Implemented)
 <img src="readme-resources/screenshots/background-request-advanced-options.png">
 
 These options can be useful when *Background Request Rule* is not enough to keep the session alive. The *Background Request Rule* alone is not enough when websites implements JavaScript idle timer in the browser itself. 
@@ -148,6 +148,10 @@ For example: a web site uses [jQuery session timeout](https://plugins.jquery.com
 ## Browser compatibility:
 <img title="Firefox" src="readme-resources/browsers/firefox.png" style="width: 64px;"/>
 
+## Firefox Multi-Account Container Support:
+Version 2.0 now Support [Multi-Account Containers](https://support.mozilla.org/en-US/kb/containers)
+<img src="readme-resources/screenshots/Container.png">
+
 ## What's next 
 
 TODO
@@ -157,6 +161,7 @@ TODO
 - [Dmitri Snytkine](https://github.com/snytkine) for his wonderful chrome add-on [Staying Alive](https://chrome.google.com/webstore/detail/staying-alive/lhobbakbeomfcgjallalccfhfcgleinm)
 - Icons by [Firefox Photon icons](https://design.firefox.com/icons/viewer/)
 - [Christian Kaindl](https://github.com/christiankaindl) for Translate an HTML page with the i18n API
+- [Firefox add-on Multi-Account Containers](https://addons.mozilla.org/firefox/addon/multi-account-containers/) for Support of Multi-Account Containers
 
 ## Info
 
