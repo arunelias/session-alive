@@ -7,7 +7,7 @@ There are **2** ways to contribute to Session Alive:
 - [Translations](#translations)
 - [Code](#coding)
 
-If at any time you need help you can always open an Issue on the GitHub page and someone will help you to get started.
+If at any time you need help you can always open an Issue on the GitHub page and someone will help you get started.
 
 Also, if you have found an error or bug, please create an issue on GitHub. This is the fastest way to get it fixed and helps greatly to improve Session Alive for everyone. Lot's of misbehavior are caused by simple mistakes and can be fixed easily, but only once they are known to exist.
 
@@ -36,7 +36,7 @@ If you want to contribute a feature or other things such as code organization, h
 
 ## Structure
 
-The most complex parts of the Add-on is the Background Script (`background.js`) and the Content Script (`inject/cs.js`).
+The most complex parts of the Add-on are the Background Script (`background.js`) and the Content Script (`inject/cs.js`).
 
 **background.js**
 This file has **14** functions. Main functions are:
