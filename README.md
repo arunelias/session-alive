@@ -5,11 +5,11 @@ This add-on is used to keep the session alive for any website. Install and forge
 
 Install from the [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/) website.
 
-> Original idea credits to [Dmitri Snytkine](https://github.com/snytkine) for his wonderful chrome add-on [Staying Alive](https://chrome.google.com/webstore/detail/staying-alive/lhobbakbeomfcgjallalccfhfcgleinm)
+> Inspired by [Dmitri Snytkine's](https://github.com/snytkine) wonderful Chrome add-on [Staying Alive](https://chrome.google.com/webstore/detail/staying-alive/lhobbakbeomfcgjallalccfhfcgleinm)
 
 ### Purpose
 
-Session Timeout is great functionality for Production websites, but not for Development and Testing. There are great add-ons for reloading the pages, but what about a "fit and forget it" solution?
+Session Timeout is great for Production websites, but not for Development and Testing. There are great add-ons for reloading webpages, but what about a "set it and forget it" solution?
 
 ### Contents
 
@@ -73,19 +73,19 @@ The following options are available in the Background Request Options:
   Navigating to the _Trigger URL_ will start the background request loop. The background request URL is requested at the set _Request Interval_. 
 
 - **Background Request URL: (Optional)**  
-  If background request URL is different from the _Trigger URL_, the same can be set here. If this is not supplied _Trigger URL_ will be used as the Background request URL.
+  If background request URL is different from the _Trigger URL_, it can be set here. Otherwise the _Trigger URL_ will be used by default.
 
 - **Request Interval (in minutes):** 
   The background request URL is requested in a loop at the set _Request Interval_ time. The minimum _Request Interval_ is 1 minute, and only whole numbers can be set here.
 
 - **Stop Background Request when server response is not 200 OK:** 
   The server response of the background request is analyzed and the loop can be stopped if the server response is not a [200 OK](https://tools.ietf.org/html/rfc2616#section-10.2.1) status. 
-  The response from server may indicate that the session is already expired.
+  The response from server may indicate that the session has already expired.
 
 - **Request Page header information (HEAD Request) only:** 
-  When background request fetches the URL, JavaScript code in the page is also executed. This may interfere with the page user is currently working with. To prevent this, [HEAD](https://tools.ietf.org/html/rfc2616#section-9.4) request can be opted, which will fetch only the page header information only.
+  When a background request fetches the URL, JavaScript code in the page is also executed. This may interfere with the page user is currently working with. To prevent this, [HEAD](https://tools.ietf.org/html/rfc2616#section-9.4) request can be opted, which will only fetch the page header information.
 
-> The *Background Request Rule* will not be enough to keep the session alive, if websites implements JavaScript idle timer in the browser itself. 
+> If a website implements a JavaScript idle timer in the browser itself, the *Background Request Rule* will not be enough to keep the session alive.
 > Use Advanced options or Foreground Auto-Reload options in this scenario.
 
 #### Foreground Request Options
@@ -98,14 +98,14 @@ The following options are available in the Foreground Request Options:
   Navigating to any URL starting with the _Trigger URL_ will start the foreground page reload loop. For example if _Trigger URL_ is set to `https://example.com/user/`, navigating to `https://example.com/user/profile` or `https://example.com/user/account/details` will set to auto reload in the set _Request Interval_.
 
 - **Foreground Auto-Reload Interval (in minutes):** 
-  The page will be auto-reloading in the set _Request Interval_ time. The minimum _Request Interval_ is 1 minute, and only whole numbers can be set here.
+  The page will auto-reload after the set _Request Interval_ time. The minimum _Request Interval_ is 1 minute, and only whole numbers can be set here.
 
 - **Play beep sound before reloading page:** 
-  Play a short beep sound 10 seconds before page reloading automatically. The beep sound can be tested using the _Test_ button.
+  Play a short beep sound 10 seconds before a page reloads automatically. The sound can be tested using the _Test_ button.
 
-> A count-down timer is displayed in the web page 30 seconds before before page reloading automatically.
-> Any unsaved data in the page may be lost when the page reloads automatically.
-> Browser will show a warning dialog if any form submission is repeated by the page reload.
+> A count-down timer will be displayed on the web page 30 seconds before it reloads automatically.
+> Any unsaved data on the page may be lost when the page reloads.
+> The browser will show a warning dialog if any form submission is repeated by the page reload.
 > Please note that the count-down timer will **not** be displayed for web pages that uses [FRAMESET element](https://www.w3.org/TR/html401/present/frames.html). However, page reloads automatically at the set interval.
 
 #### Notification Options
@@ -138,7 +138,7 @@ For example: a web site uses [jQuery session timeout](https://plugins.jquery.com
 ```javascript
     $.sessionTimeout({warnAfter: 9e6,redirAfter: 12e6});true;
 ```
-> Keep a return value or _true;_ in the javascript code
+> Keep a return value or _true;_ in the JavaScript code
 
 ## Installation
 
