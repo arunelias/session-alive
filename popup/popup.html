@@ -14,13 +14,16 @@
     <div class="container-fluid">
       <!-- Settings Row -->
       <div class="row">
-        <div class="col-6 text-left"><button id="settings" class="btn btn-primary btn-sm m-1" data-translate="settingsHeading">Settings</button></div>
-        <div class="col-6 text-right"><button id="close" type="button" class="close m-1" aria-label="Close" title="Close Pop-up"></button></div>
+        <div class="col-10 text-left">
+          <button id="add-rule-current-page" class="btn btn-primary btn-sm m-1" data-translate="addRuleCurrentPageHeading">+ Add a Rule for this page</button>
+          <button id="settings" class="btn btn-primary btn-sm m-1" data-translate="settingsHeading">Settings</button>
+        </div>
+        <div class="col-2 text-right"><button id="close" type="button" class="close m-1" aria-label="Close" title="Close Pop-up"></button></div>
       </div>
       <!-- Running Rules Row -->
       <div class="row">
         <div class="col-12">
-          <div id="no-rules" class="alert alert-info" data-translate="noRunningRulesInfo">No Rules are running! Click the Settings button to add new rules.</div>
+          <div id="no-rules" class="alert alert-info" data-translate="noRunningRulesInfo">No Rules are running! You can manage the rules in the settings page.</div>
           <table id="rules-table" class="table table-hover table-sm small">
             <thead>
               <tr>

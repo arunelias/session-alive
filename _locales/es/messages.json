@@ -11,6 +11,10 @@
     "message": "Ajustes",
     "description": "Settings heading."
   },
+  "addRuleCurrentPageHeading": {
+    "message": "+ Agregar una regla para esta página",
+    "description": "Add a Rule for Current Page button text"
+  },
   "noRunningRulesInfo": {
     "message": "¡No hay reglas en ejecución! Haga clic en el botón Ajustes para agregar nuevas reglas.",
     "description": "No rules running info message."

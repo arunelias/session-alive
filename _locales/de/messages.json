@@ -11,6 +11,10 @@
     "message": "Einstellungen",
     "description": "Settings heading."
   },
+  "addRuleCurrentPageHeading": {
+    "message": "+ Voeg een regel toe voor deze pagina",
+    "description": "Add a Rule for Current Page button text"
+  },
   "noRunningRulesInfo": {
     "message": "Er zijn geen regels actief! Klik op de knop Einstellungen om nieuwe regels toe te voegen.",
     "description": "No rules running info message."

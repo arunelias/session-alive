@@ -4,6 +4,16 @@ console.clear();
 var aliveRules = {};
 var runningRules = {};
 var totRunningRules = 0;
+const APPLICABLE_PROTOCOLS = ["http:", "https:"];
+/*
+ * Returns true only if the URL's protocol is in APPLICABLE_PROTOCOLS.
+ * @param {url} URL to check
+*/
+function protocolIsApplicable(url) {
+  var anchor =  document.createElement('a');
+  anchor.href = url;
+  return APPLICABLE_PROTOCOLS.includes(anchor.protocol);
+}
 /*
  * Display Notifications
  *
@@ -34,6 +44,13 @@ function getTimeStr() {
   return hr + ":" + min + " " + ampm;
 }
 function onError(e) {console.error(`Error: ${e}`);}
+/*
+** Store or Update of the Rule Successful
+*/
+function setItem() {
+  console.log("Store Settings Successful!");
+  displayNotifications({title: "Add a Rule", message: "Rule saved successfully!"});
+}
 /*
  * Update Browser Badge with the total Number of Running Rules
  *
@@ -292,6 +309,64 @@ function handleAjax(tab){
   return responseMsg;
 }
 /*
+ * Handle Add a Rule for Current Page request message from Content Script
+ *
+ * @param {tabs} tab list of the Active tab on the Active Window
+*/
+function handleAddRule(tabs){
+  var url = tabs[0].url;
+  var duplicate = false;
+  var rules = {};
+  var aliveRuleId = "sa" + (new Date()).getTime();
+  var aliveRuleName = "Rule " + (Object.keys(aliveRules).length + 1);
+  var aliveSettings = {
+    rule_name: aliveRuleName,
+    rule_disable: false,
+    trigger_uri: url,
+    loop_uri: "",
+    loop_interval: 5,
+    loop_exit_200: true,
+    bg_head_only: false,
+    js_inject: "",
+    js_trigger_uri: "",
+    remove_cookies: false,
+    fg_trigger_uri: "",
+    fg_interval: "",
+    fg_reload_sound: true,
+    notif_bgrequest: false,
+    notif_bgexit: true,
+    notif_fgreload: false,
+    notif_fgexit: true
+  };
+  if (protocolIsApplicable(url)) {
+    /* Duplicate URL Checking */
+    for (var key in aliveRules) {
+      if (aliveRules.hasOwnProperty(key)) {
+        if (aliveRules[key].rule_disable) { continue; }
+        if(url.replace(/\/$/, '').toLowerCase() == aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase()) {
+          duplicate = true;
+          break;
+        }
+      }
+    }
+    if (!duplicate) {
+      // Save the Settings to {rules} Object with (key) as [aliveRuleId]
+      rules[aliveRuleId] = aliveSettings;
+      // Save the {rules} Object to browser.storage.local
+      browser.storage.local.set(rules)
+      .then(setItem, onError);
+      browser.tabs.reload();
+    }
+    else {
+      displayNotifications({title: "Add a Rule", message: "Current URL is already used in another Rule! Please disable or delete that Rule first."});
+      browser.tabs.reload();
+    }
+  }
+  else {
+    displayNotifications({title: "Add a Rule", message: "Unable to create a Rule! The current URL is invalid."});
+  }
+}
+/*
  * Handle Messages from Other Scripts
  *
  * @param {request} Request Event, Request Rule id, Ajax Status and Tab Ajax Response URL
@@ -359,6 +434,11 @@ function handleMessage(request, sender, sendResponse) {
 // Running rules request message from Pop-up script.
     case "Running-rules":
     browser.runtime.sendMessage({event: "Running-rules-list", rules: runningRules});
+    break;
+// Add a Rule for Current Page request message from Pop-up script.
+    case "Add-Rule-Current-Page":
+      let querying = browser.tabs.query({currentWindow: true, active: true});
+      querying.then(handleAddRule, onError);
     break;
 
     default:

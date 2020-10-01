@@ -11,8 +11,12 @@
     "message": "Settings",
     "description": "Settings heading."
   },
+  "addRuleCurrentPageHeading": {
+    "message": "+ Add a Rule for this page",
+    "description": "Add a Rule for Current Page button text"
+  },
   "noRunningRulesInfo": {
-    "message": "No Rules are running! Click the Settings button to add new rules.",
+    "message": "No Rules are running! You can manage the rules in the settings page.",
     "description": "No rules running info message."
   },
   "aliveDivTitle": {

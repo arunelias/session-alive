@@ -13,6 +13,14 @@ document.getElementById('settings').addEventListener('click', function(){
     window.close();
 });
 /*
+ * Add Event Listner for Add a Rule for Current Page button
+*/
+document.getElementById('add-rule-current-page').addEventListener('click', function(){
+  //Request Add a Rule for Current Page to Background script
+  browser.runtime.sendMessage({event: "Add-Rule-Current-Page"});
+  //window.close();
+});
+/*
  * Cancel the running rule by (key)
  *
  * @param {key} rule_id as key of Running Rules Object
@@ -37,6 +45,8 @@ function handleRunningRules(rules) {
   if (totRunningRules > 0) {
     //Display Rule Table
     ruleTable.style.display = "block";
+    //Hide No Rules Running Info
+    noRuleInfo.style.display = "none";
     // Clear the listing by removing nodes
     while (ruleListingNode.lastChild) {
       ruleListingNode.removeChild(ruleListingNode.lastChild);
@@ -50,7 +60,8 @@ function handleRunningRules(rules) {
           aliveRuleRowData = document.createElement('td');
           aliveRuleRowData.className = "rule-name-td";
           aliveRuleRowData.textContent = runningRules[key].rule_name;
-        	aliveRuleRowData.title = runningRules[key].run_uri;
+          aliveRuleRowData.title = runningRules[key].run_uri;
+          aliveRuleRowData.appendChild(document.createTextNode('\u00A0'));
           aliveRuleRow.appendChild(aliveRuleRowData);
           //contextualIdentities <td>
           aliveRuleRowData = document.createElement('td');
