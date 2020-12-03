@@ -4,7 +4,7 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Halten Sie Ihre Sitzung auf jeder Website am Leben und melden Sie sich niemals ab ...",
+    "message": "Houd je sessie levend op elke website en word nooit uitgelogd ...",
     "description": "Description of the extension."
   },
   "settingsHeading": {
@@ -12,19 +12,19 @@
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Eine Regel für diese Seite hinzufügen",
+    "message": "+ Voeg een regel toe voor deze pagina",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
-    "message": "Es sind keine Regeln aktiv! Klicken Sie auf die Schaltfläche Einstellungen, um neue Regeln hinzuzufügen.",
+    "message": "Er zijn geen regels actief! Klik op de knop Einstellungen om nieuwe regels toe te voegen.",
     "description": "No rules running info message."
   },
   "aliveDivTitle": {
-    "message": "Geplante Seite neu laden, um die Sitzung am Leben zu erhalten!",
+    "message": "Geplande pagina Opnieuw laden om de sessie levendig te houden!",
     "description": "Content Script Alive Div tool-tip."
   },
   "aliveDivContent": {
-    "message": "Klicken Sie, um den Seitenreload für 1 Minute zu pausieren.",
+    "message": "Klik om de pagina opnieuw in te sluimeren gedurende 1 minuut",
     "description": "Content Script Alive Div mouse hover info message."
   }
 }
