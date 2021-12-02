@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "Session Alive",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Halte deine Sessions auf jeder Website aktiv und werde nie mehr ausgeloggt ...",
+    "description": "Description of the extension."
+  },
+  "settingsHeading": {
+    "message": "Einstellungen",
+    "description": "Settings heading."
+  },
+  "noRunningRulesInfo": {
+    "message": "Es sind keine Regeln aktiv! Klicke auf die Schaltfläche Einstellungen, um neue Regeln hinzuzufügen.",
+    "description": "No rules running info message."
+  },
+  "aliveDivTitle": {
+    "message": "Geplantes Neuladen der Seite, um die Sitzung am Leben zu erhalten!",
+    "description": "Content Script Alive Div tool-tip."
+  },
+  "aliveDivContent": {
+    "message": "Klicken, um Neuladen der Seite für eine Minute zu pausieren",
+    "description": "Content Script Alive Div mouse hover info message."
+  }
+}
