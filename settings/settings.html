@@ -75,13 +75,13 @@
                                 <div class="card-header" id="settings-background">Background Request Options</div>
                                 <div class="collapse show">
                                     <div class="card-body form-group mb-0">
-                                        <label for="trigger_uri" class="mb-0">Trigger URL:</label>
-                                        <input type="url" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="https?://.+">
+                                        <label for="trigger_uri" class="mb-0">Trigger URL: <span class="badge badge-pill badge-info">asterisk (*) wildcard is supported</span></label>
+                                        <input type="text" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="(https?://.+).{3,}">
                                         <div id="trigger_uri_fb" class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
                                         <div class="text-secondary small">Navigating to this URL will start the background request loop.</div>
 
                                         <label for="loop_uri"  class="pt-3 mb-0">Background Request URL: <span class="badge badge-pill badge-info">Optional</span></label>
-                                        <input type="url" class="form-control" id="loop_uri" placeholder="Optional Background Request URL. eg: https://myapp.com/options" pattern="https?://.+">
+                                        <input type="url" class="form-control" id="loop_uri" placeholder="Optional Background Request URL. eg: https://myapp.com/options" pattern="(https?://.+).{3,}">
                                         <div class="invalid-feedback">Valid background request URL (including "http://" or "https://") is required.</div>
                                         <div class="text-secondary small">Optional. If not supplied Trigger URL will be used as Background request URL.</div>
 
@@ -211,10 +211,11 @@
                         <div class="card-header text-center"><strong>Release Notes</strong></div>
                         <div class="card-body">
                             <ul class="list-unstyled">
-                                <li><strong>2.1</strong>
+                                <li><strong>2.2</strong>
                                     <ul class="list-unstyled">
-                                        <li><strong>New Feature:</strong> Create a new rule using <strong>+ Add a Rule for this page</strong> button.</li>
-                                        <li>Improve grammar and spelling. Thank you <a href="https://github.com/Stevoisiak" target="_blank" class="text-info">Stevoisiak</a> for your <a href="https://github.com/arunelias/session-alive/pull/16" target="_blank" class="text-info">support.</a> </li>
+                                        <li><strong>New Feature:</strong> Wildcard supported in Trigger URL. <strong>Use asterisk (*) wildcard symbol</strong> in Trigger URL. Currently wildcard is supported only in the path part of the URL.</li>
+                                        <li>Add Dutch (nl) language. Thank you <a href="https://github.com/SeifertDaniel" target="_blank" class="text-info">SeifertDaniel</a> for your <a href="https://github.com/arunelias/session-alive/pull/21" target="_blank" class="text-info">support.</a> </li>
+                                        <li>Improve German (de) language. Thank you <a href="https://github.com/d-Rickyy-b" target="_blank" class="text-info">d-Rickyy-b</a> for your <a href="https://github.com/arunelias/session-alive/pull/23" target="_blank" class="text-info">support.</a> </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -234,7 +235,7 @@
                             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link" class="card-link text-info" title="Help me improve Session Alive by leaving feedback">Feedback</a>
                             <a href="https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/privacy/" class="card-link text-info" title="Read the privacy policy for this add-on">Privacy Policy</a>
                         </div>
-                        <div class="card-footer text-right">&copy; Arun Elias - 2020</div>
+                        <div class="card-footer text-right">&copy; Arun Elias - 2021</div>
                     </div>
                 </div>
             </div>

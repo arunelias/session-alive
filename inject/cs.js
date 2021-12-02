@@ -114,7 +114,7 @@ function initAliveElements() {
 ** Handle Response from Background Script
 */
 function handleResponse(message) {
-  console.log("Background Script => Content Script: " + message.response);
+  console.log("Background Script => Content Script: " + message.response);console.log(message);
   var intTimeout;
   if (message.run=="foreground") {
   	//aliveDiv.style.display = "block";

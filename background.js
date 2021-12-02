@@ -5,6 +5,8 @@ var aliveRules = {};
 var runningRules = {};
 var totRunningRules = 0;
 const APPLICABLE_PROTOCOLS = ["http:", "https:"];
+const REGEXP_WILDCARD = /(\*)/g;
+const REGEXP_ESCAPE = /[.+\-?^${}()|[\]\\]/g;
 /*
  * Returns true only if the URL's protocol is in APPLICABLE_PROTOCOLS.
  * @param {url} URL to check
@@ -13,6 +15,15 @@ function protocolIsApplicable(url) {
   var anchor =  document.createElement('a');
   anchor.href = url;
   return APPLICABLE_PROTOCOLS.includes(anchor.protocol);
+}
+/*
+ * Returns domain name of the URL
+ * @param {url} URL
+*/
+function getDomainName(url) {
+  var anchor =  document.createElement('a');
+  anchor.href = url;
+  return anchor.hostname;
 }
 /*
  * Display Notifications
@@ -115,9 +126,10 @@ function handleStorageChange() {
 function handleRunningRules(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, bg_triggerUriMatch, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId, tab_domain;
   uri = tab.url.replace(/\/$/, '').toLowerCase();
   tab_cookieStoreId = (tab.cookieStoreId === undefined) ? "" : tab.cookieStoreId;
+  tab_domain = getDomainName(uri);// Get Domain name for supporting Wildcard URLs
   totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
   if (totRunningRules === 0) { return null; }
   // Iterate through the keys in runningRules Object
@@ -128,9 +140,19 @@ function handleRunningRules(tab) {
       fg_loopUriVal =  runningRules[key].fg_trigger_uri.replace(/\/$/, '').toLowerCase();
       // Check rule is already running in another tab or not
       if (runningRules[key].runMode == "foreground" && fg_loopUriVal !== "" && uri.length >= fg_loopUriVal.length && uri.indexOf(fg_loopUriVal) === 0 && runningRules[key].cookieStoreId == tab_cookieStoreId) {
-        if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
+        if (runningRules[key].tabId != tab.id && runningRules[key].domain == tab_domain) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
-      if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri && runningRules[key].cookieStoreId == tab_cookieStoreId) {
+      // Background Trigger URL matching
+      bg_triggerUriMatch = false;
+      if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "" && bg_triggerUriVal.indexOf('*') >= 0) {// Wildcard present in Trigger URL
+        let re = new RegExp(bg_triggerUriVal.replace(/\/$/, '').replace(/\/\*$/, '*').toLowerCase().replace(REGEXP_ESCAPE, '\\$&').replace(REGEXP_WILDCARD, '\.$1'));
+        bg_triggerUriMatch = re.test(uri);
+        loopUriVal =  (runningRules[key].loop_uri && runningRules[key].loop_uri !== "") ? runningRules[key].loop_uri : uri;
+      }
+      else if (runningRules[key].runMode == "background" && bg_triggerUriVal !== "") {
+        bg_triggerUriMatch = (bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri);
+      }
+      if (bg_triggerUriMatch && runningRules[key].cookieStoreId == tab_cookieStoreId && runningRules[key].domain == tab_domain) {
         if (runningRules[key].tabId != tab.id) { responseMsg = {response: "Rule already running"}; return responseMsg;}
       }
       //Confirm call is from the tab which is Running the Rule
@@ -189,12 +211,13 @@ function handleRunningRules(tab) {
 function handleInitializeMsg(tab) {
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId;
+  var timeoutVal, uri, loopUriVal, bg_triggerUriVal, bg_triggerUriMatch, fg_loopUriVal, headRequest, reloadSound, tab_cookieStoreId, tab_domain;
   //Handle Running Rules
   responseMsg = handleRunningRules(tab);
   if (responseMsg) {return responseMsg;}
   uri = tab.url.replace(/\/$/, '').toLowerCase();
   tab_cookieStoreId = (tab.cookieStoreId === undefined) ? "" : tab.cookieStoreId;
+  tab_domain = getDomainName(uri);// Get Domain name for supporting Wildcard URLs;
   // Iterate through the keys in aliveRules Object
   for (var key in aliveRules) {
     if (aliveRules.hasOwnProperty(key)) {
@@ -219,19 +242,30 @@ function handleInitializeMsg(tab) {
           beepEnabled: reloadSound
         };
         // Add aliveRules(key) to RunningRules(Key)
-        runningRules[key+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
-        runningRules[key+tab_cookieStoreId].tabId = tab.id;
-        runningRules[key+tab_cookieStoreId].runMode = "foreground";
-        runningRules[key+tab_cookieStoreId].run_uri = fg_loopUriVal;
-        runningRules[key+tab_cookieStoreId].run_count = 0;
-        runningRules[key+tab_cookieStoreId].last_run = "";
-        runningRules[key+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
+        runningRules[key+tab_domain+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
+        runningRules[key+tab_domain+tab_cookieStoreId].tabId = tab.id;
+        runningRules[key+tab_domain+tab_cookieStoreId].runMode = "foreground";
+        runningRules[key+tab_domain+tab_cookieStoreId].run_uri = fg_loopUriVal;
+        runningRules[key+tab_domain+tab_cookieStoreId].run_count = 0;
+        runningRules[key+tab_domain+tab_cookieStoreId].last_run = "";
+        runningRules[key+tab_domain+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
+        runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
         return responseMsg;
       }
 
-      if (bg_triggerUriVal !== "" && bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri) {
+      // Background Trigger URL matching
+      bg_triggerUriMatch = false;
+      if (bg_triggerUriVal !== "" && bg_triggerUriVal.indexOf('*') >= 0) {// Wildcard matching
+        let re = new RegExp(bg_triggerUriVal.replace(/\/$/, '').replace(/\/\*$/, '*').toLowerCase().replace(REGEXP_ESCAPE, '\\$&').replace(REGEXP_WILDCARD, '\.$1'));
+        bg_triggerUriMatch = re.test(uri);
+        loopUriVal =  (aliveRules[key].loop_uri && aliveRules[key].loop_uri !== "") ? aliveRules[key].loop_uri : uri;
+      }
+      else if (bg_triggerUriVal !== "") {
+        bg_triggerUriMatch = (bg_triggerUriVal.replace(/\/$/, '').toLowerCase() == uri);
+      }
+      if (bg_triggerUriMatch) {
         headRequest = aliveRules[key].bg_head_only;
         // Loop Uri found in the Tab with Background Rule Match -> Preference to Foreground Rule
         timeoutVal = parseInt(aliveRules[key].loop_interval, 10);
@@ -246,13 +280,14 @@ function handleInitializeMsg(tab) {
           headRequestOnly: headRequest
         };
         // Add aliveRules(key) to RunningRules(Key)
-        runningRules[key+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
-        runningRules[key+tab_cookieStoreId].tabId = tab.id;
-        runningRules[key+tab_cookieStoreId].runMode = "background";
-        runningRules[key+tab_cookieStoreId].run_uri = loopUriVal;
-        runningRules[key+tab_cookieStoreId].run_count = 0;
-        runningRules[key+tab_cookieStoreId].last_run = "";
-        runningRules[key+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
+        runningRules[key+tab_domain+tab_cookieStoreId] = JSON.parse(JSON.stringify(aliveRules[key]));
+        runningRules[key+tab_domain+tab_cookieStoreId].tabId = tab.id;
+        runningRules[key+tab_domain+tab_cookieStoreId].runMode = "background";
+        runningRules[key+tab_domain+tab_cookieStoreId].run_uri = loopUriVal;
+        runningRules[key+tab_domain+tab_cookieStoreId].run_count = 0;
+        runningRules[key+tab_domain+tab_cookieStoreId].last_run = "";
+        runningRules[key+tab_domain+tab_cookieStoreId].cookieStoreId = tab_cookieStoreId;
+        runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
         return responseMsg;
@@ -271,7 +306,7 @@ function handleInitializeMsg(tab) {
 function handleAjax(tab){
   var responseMsg = {};
   var invalidMsg = {response: "Invalid Settings"};
-  var timeoutVal, uri, loopUriVal, fg_loopUriVal, ajaxResponseUrl, headRequest;
+  var timeoutVal, uri, loopUriVal, fg_loopUriVal, ajaxResponseUrl, ajaxResponseUrlMatch, headRequest;
   ajaxResponseUrl = tab.responseUrl.replace(/\/$/, '').toLowerCase();
   // Iterate through the keys in runningRules Object
   for (var key in runningRules) {
@@ -283,8 +318,18 @@ function handleAjax(tab){
         headRequest = runningRules[key].bg_head_only;
         timeoutVal = parseInt(runningRules[key].loop_interval, 10);
         if (isNaN(timeoutVal) || timeoutVal === 0) { return invalidMsg; }//NaN or Zero Encountered - Return Invalid
+        // Background Trigger URL matching
+        ajaxResponseUrlMatch = false;
+        if (loopUriVal.indexOf('*') >= 0) {
+          let re = new RegExp(loopUriVal.replace(/\/$/, '').replace(/\/\*$/, '*').toLowerCase().replace(REGEXP_ESCAPE, '\\$&').replace(REGEXP_WILDCARD, '\.$1'));
+          ajaxResponseUrlMatch = re.test(ajaxResponseUrl);
+          loopUriVal =  (runningRules[key].loop_uri && runningRules[key].loop_uri !== "") ? runningRules[key].loop_uri : ajaxResponseUrl;
+        }
+        else {
+          ajaxResponseUrlMatch = (ajaxResponseUrl == loopUriVal.replace(/\/$/, '').toLowerCase());
+        }
         //Check the Response is Valid or Not
-        if (runningRules[key].loop_exit_200 === false || (tab.status === 200 && ajaxResponseUrl == loopUriVal.replace(/\/$/, '').toLowerCase())) {
+        if (runningRules[key].loop_exit_200 === false || (tab.status === 200 && ajaxResponseUrlMatch)) {
           responseMsg = {
             response: "Run background rule",
             run: "background",
@@ -316,6 +361,7 @@ function handleAjax(tab){
 function handleAddRule(tabs){
   var url = tabs[0].url;
   var duplicate = false;
+  var AddUrlMatch, TriggerUrlMatch;
   var rules = {};
   var aliveRuleId = "sa" + (new Date()).getTime();
   var aliveRuleName = "Rule " + (Object.keys(aliveRules).length + 1);
@@ -344,6 +390,19 @@ function handleAddRule(tabs){
       if (aliveRules.hasOwnProperty(key)) {
         if (aliveRules[key].rule_disable) { continue; }
         if(url.replace(/\/$/, '').toLowerCase() == aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase()) {
+          duplicate = true;
+          break;
+        }
+        /* Duplicate URL Checking for WildCard URLs*/
+        if (url.indexOf('*') >= 0) {
+          let re = new RegExp(url.replace(/\/$/, '').replace(/\/\*$/, '*').toLowerCase().replace(REGEXP_ESCAPE, '\\$&').replace(REGEXP_WILDCARD, '\.$1'));
+          AddUrlMatch = re.test(aliveRules[key].trigger_uri.replace(/\/$/, '').toLowerCase());
+        }
+        if (aliveRules[key].trigger_uri.indexOf('*') >= 0) {
+          let re = new RegExp(aliveRules[key].trigger_uri.replace(/\/$/, '').replace(/\/\*$/, '*').toLowerCase().replace(REGEXP_ESCAPE, '\\$&').replace(REGEXP_WILDCARD, '\.$1'));
+          TriggerUrlMatch = re.test(url.replace(/\/$/, '').toLowerCase());
+        }
+        if (AddUrlMatch || TriggerUrlMatch) {
           duplicate = true;
           break;
         }
