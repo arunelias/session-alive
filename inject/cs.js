@@ -103,7 +103,7 @@ function initAliveElements() {
 	aliveDivInfo.textContent = content;
 	document.body.appendChild(aliveDivInfo);
 	//Sound Element for beep defore reload
-	soundFile = browser.extension.getURL("beep.wav");
+	soundFile = browser.runtime.getURL("beep.wav");
 	aliveElement = document.createElement("audio");
 	aliveElement.id = "sound_element";
 	aliveElement.setAttribute("src", soundFile);

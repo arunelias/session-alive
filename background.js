@@ -35,7 +35,7 @@ function displayNotifications(data){
     browser.notifications.create(tabId, {
         "type": "basic",
         "title": data.title,
-        "iconUrl": browser.extension.getURL("assets/icon/icon.svg"),
+        "iconUrl": browser.runtime.getURL("assets/icon/icon.svg"),
         "message": data.message
     });
 }
