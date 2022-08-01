@@ -9,7 +9,7 @@ document.getElementById('close').addEventListener('click', function(){
  * Add Event Listner for Settings button
 */
 document.getElementById('settings').addEventListener('click', function(){
-    browser.runtime.openOptionsPage();
+    chrome.runtime.openOptionsPage();
     window.close();
 });
 /*
@@ -17,7 +17,7 @@ document.getElementById('settings').addEventListener('click', function(){
 */
 document.getElementById('add-rule-current-page').addEventListener('click', function(){
   //Request Add a Rule for Current Page to Background script
-  browser.runtime.sendMessage({event: "Add-Rule-Current-Page"});
+  chrome.runtime.sendMessage({event: "Add-Rule-Current-Page"});
   //window.close();
 });
 /*
@@ -27,7 +27,8 @@ document.getElementById('add-rule-current-page').addEventListener('click', funct
  */
 function cancelRunningRuleByKey(key) {
 	//Request Cancel Rule to Background script
-  browser.runtime.sendMessage({event: "Cancel", rule_id:key});
+  chrome.runtime.sendMessage({event: "Cancel", rule_id:key})
+  .then(handleMessage);
 }
 /*
  * Handle Running Rules list message from Background Script
@@ -134,15 +135,16 @@ function handleMessage(request, sender, sendResponse) {
 */
 function handleUpdated(tabId, changeInfo, tabInfo) {
   //Request Running rules details from background script
-  browser.runtime.sendMessage({event: "Running-rules"});
+  chrome.runtime.sendMessage({event: "Running-rules"})
+  .then(handleMessage);
 }
 /*
  * Contextual Identities initialize
  * @param {} nil 
 */
 function initIdentities() {
-  if (browser.contextualIdentities !== undefined) {
-    browser.contextualIdentities.query({}).then((identities) => {
+  if (chrome.contextualIdentities !== undefined) {
+    chrome.contextualIdentities.query({}).then((identities) => {
       if (!identities.length) { console.log("contextualIdentities: No identities returned from the API."); }
       else { contextualIdentities = identities; }
     });
@@ -156,17 +158,18 @@ function initPopup() {
   //Initialize Contextual Identities
   initIdentities();
 	//Request Running rules details from background script
-  browser.runtime.sendMessage({event: "Running-rules"});
+  chrome.runtime.sendMessage({event: "Running-rules"})
+  .then(handleMessage);
   // Apply localized/translated strings
   translate();
 }
 /*
 ** Add Listener to Handle the message from Content Script
 */
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);
 /*
 ** Add Listener to Handle the Tab Update [onUpdated]
 */
-browser.tabs.onUpdated.addListener(handleUpdated);
+chrome.tabs.onUpdated.addListener(handleUpdated);
 //Call Initialize
 initPopup();

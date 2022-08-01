@@ -37,7 +37,7 @@ function onError(e) { console.error("Error: " + e); }
 function setItem() {
   console.log("Store Settings Successful!");
   //Update UI
-  var refreshSettings = browser.storage.local.get();
+  var refreshSettings = chrome.storage.local.get();
   refreshSettings.then(updateUI, onError).then(function() {
     document.getElementById("rule-editor").style.display = "none";
     document.getElementById("save-success").style.display = "block";
@@ -49,7 +49,7 @@ function setItem() {
 function removedItem() {
   console.log("Delete Settings Successful!");
   //Update UI
-  var refreshSettings = browser.storage.local.get();
+  var refreshSettings = chrome.storage.local.get();
   refreshSettings.then(updateUI, onError).then(function() {
     document.getElementById("rule-editor").style.display = "none";
     document.getElementById("delete-success").style.display = "block";
@@ -96,7 +96,9 @@ function storeSettings() {
     document.getElementById("save-success-next-step").style.display = "block";
     triggerUriLink.href = (fgTriggerUriInput.value && fgTriggerUriInput.value !== "") ? fgTriggerUriInput.value : triggerUriInput.value;
     // Check for Wildcard and trim wildcard
-    triggerUriLink.href = triggerUriLink.href.substring(0, triggerUriLink.href.indexOf('*'));
+    if (triggerUriLink.href.indexOf('*') > -1) {
+      triggerUriLink.href = triggerUriLink.href.substring(0, triggerUriLink.href.indexOf('*'));
+    }
   }
   // Keep the URL as in format given as URL can contain base64 encoded strings
   aliveSettings = {
@@ -120,8 +122,8 @@ function storeSettings() {
   };
   // Save the Settings to {rules} Object with (key) as [aliveRuleId]
   rules[aliveRuleId] = aliveSettings;
-  // Save the {rules} Object to browser.storage.local
-  browser.storage.local.set(rules)
+  // Save the {rules} Object to chrome.storage.local
+  chrome.storage.local.set(rules)
   .then(setItem, onError);
 }
 /*
@@ -222,7 +224,7 @@ function updateUI(aliveSettings) {
 function deleteSettings() {
 	var aliveRuleId = ruleIdInput.value;
 	if (confirm("Are you sure you want to delete this rule?")) {
-		browser.storage.local.remove(aliveRuleId)
+		chrome.storage.local.remove(aliveRuleId)
 		.then(removedItem, onError);
 	}
 }
@@ -232,7 +234,7 @@ function deleteSettings() {
  * @param {rule_id} rule id as (key) of the settings storage
 */
 function getSettingsByKey(rule_id) {
-	const gettingSettingsByKey = browser.storage.local.get(rule_id);
+	const gettingSettingsByKey = chrome.storage.local.get(rule_id);
 	gettingSettingsByKey.then(updateEditor, onError);
   //Reset the Rule Editor form
   document.getElementById("rule-editor-form").reset();
@@ -242,7 +244,7 @@ function getSettingsByKey(rule_id) {
 /*
 ** On opening the options page, fetch stored settings and update the UI with them.
 */
-const gettingStoredSettings = browser.storage.local.get();
+const gettingStoredSettings = chrome.storage.local.get();
 gettingStoredSettings.then(updateUI, onError);
 /*
 ** Add Event Listener On click event of add rules button.
@@ -405,4 +407,4 @@ function logStorageChange(changes, area) {
 /*
 ** Add Event Listener to Log the Storage Change details
 */
-browser.storage.onChanged.addListener(logStorageChange);
+chrome.storage.onChanged.addListener(logStorageChange);

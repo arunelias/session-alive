@@ -1,6 +1,7 @@
 body {
     font-family: 'Segoe UI', 'San Francisco', 'Ubuntu', sans-serif;
     background: #f9f9fa;
+    min-width: 465px;
 }
 tr {
 	background: #fff;

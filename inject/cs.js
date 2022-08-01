@@ -36,7 +36,7 @@ startCountdown = function updateCounter(rule) {
 	} else {
 		if (aliveDiv.style.display !== "none") {
 			//Reload Page and Message background script
-			browser.runtime.sendMessage({event: "Reload", rule_id: id}, function (resp) {
+			chrome.runtime.sendMessage({event: "Reload", rule_id: id}, function (resp) {
 				window.onbeforeunload = null;//To Cancel any function call  which prevents leaving the page without first saving the data
 				window.location.reload(true);
 			});
@@ -62,7 +62,7 @@ var scheduleRule = function (rule) {
 		if (rule.headRequestOnly === true) { xhr.open("HEAD", uri, true); }
 		else { xhr.open("GET", uri, true); }
 		xhr.setRequestHeader("Cache-Control", "no-cache");
-		xhr.onreadystatechange = function() { if(xhr.readyState === XMLHttpRequest.DONE) { browser.runtime.sendMessage({event: "Ajax", rule_id: id, status: xhr.status, responseUrl: xhr.responseURL}); } };
+		xhr.onreadystatechange = function() { if(xhr.readyState === XMLHttpRequest.DONE) { console.log("Ajax message send"); var sending = chrome.runtime.sendMessage({event: "Ajax", rule_id: id, status: xhr.status, responseUrl: xhr.responseURL}); sending.then(handleResponse, handleError); } };
 		xhr.send();
 	}, (timeout * 60000));
 };
@@ -75,7 +75,7 @@ function initAliveElements() {
 	aliveDiv = document.createElement("div");
 	aliveDiv.id = "session_alive_extn_timer";
 	// Apply localized/translated strings
-	try { title = browser.i18n.getMessage("aliveDivTitle"); }
+	try { title = chrome.i18n.getMessage("aliveDivTitle"); }
 	catch(e) { title = "Scheduled Page Reload to keep the Session Alive!"; }
 	aliveDiv.title = title;
 	aliveDiv.style.display = "none";
@@ -98,12 +98,12 @@ function initAliveElements() {
 	aliveDivInfo.id = "session_alive_extn_info";
 	aliveDivInfo.style.display = "none";
 	// Apply localized/translated strings
-	try { content = browser.i18n.getMessage("aliveDivContent"); }
+	try { content = chrome.i18n.getMessage("aliveDivContent"); }
 	catch(e) { content = "Click to snooze page reload for 1 minute"; }
 	aliveDivInfo.textContent = content;
 	document.body.appendChild(aliveDivInfo);
 	//Sound Element for beep defore reload
-	soundFile = browser.runtime.getURL("beep.wav");
+	soundFile = chrome.runtime.getURL("beep.wav");
 	aliveElement = document.createElement("audio");
 	aliveElement.id = "sound_element";
 	aliveElement.setAttribute("src", soundFile);
@@ -143,12 +143,12 @@ function handleError(error) {console.error("Error: " + error);}
 */
 function init(){
 	console.log("Initializing content script");
-	var sending = browser.runtime.sendMessage({event: "Initialize"});
+	var sending = chrome.runtime.sendMessage({event: "Initialize"});
 	sending.then(handleResponse, handleError);
 }
 /*
 ** Add Listener to Handle the message from Background Script
 */
-browser.runtime.onMessage.addListener(handleResponse);
+chrome.runtime.onMessage.addListener(handleResponse);
 //Call Initialize
 init();

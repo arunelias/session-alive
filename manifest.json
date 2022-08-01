@@ -1,45 +1,46 @@
 {
-    "manifest_version": 2,
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
     "version": "2.2",
+    "manifest_version": 3,
     "homepage_url": "https://github.com/arunelias/session-alive",
-    "icons": {
-        "16": "assets/icon/icon.svg",
-        "32": "assets/icon/icon.svg",
-        "48": "assets/icon/icon.svg",
-        "64": "assets/icon/icon.svg",
-        "128": "assets/icon/icon.svg"
-    },
-    "applications": {
-        "gecko": {
-            "id": "{15060491-2b35-49f4-9f01-f35b127bebcc}",
-            "strict_min_version": "57.0"
-      }
-    },
-    "permissions": ["tabs", "notifications", "storage", "contextualIdentities", "cookies"],
     "background":{
-        "scripts": ["background.js"]
+        "service_worker": "background.js"
     },
-    "browser_action":{
-        "default_icon": "assets/icon/icon.svg",
+    "permissions": [
+        "tabs",
+        "notifications",
+        "storage"
+    ],
+    "action":{
+        "default_popup": "popup/popup.html",
         "default_title": "Session Alive",
-        "default_popup": "popup/popup.html"
+        "default_icon": "assets/icon/icon.png"
+    },
+    "icons": {
+        "16": "assets/icon/icon.png",
+        "32": "assets/icon/icon.png",
+        "48": "assets/icon/icon.png",
+        "64": "assets/icon/icon.png",
+        "128": "assets/icon/icon.png"
     },
     "content_scripts":[
         {
             "matches": ["<all_urls>"],
-            "js": ["inject/cs.js"],
-            "css": ["inject/cs.css"]
+            "css": ["inject/cs.css"],
+            "js": ["inject/cs.js"]
         }
     ],
     "options_ui": {
         "browser_style": false,
         "open_in_tab": true,
-        "page": "settings/settings.html"
+        "page": "settings/settings.html?"
     },
     "web_accessible_resources": [
-        "beep.wav"
+        {
+        "resources": [ "beep.wav" ],
+        "matches": [ "<all_urls>" ]
+        }
     ],
     "default_locale": "en"
 }

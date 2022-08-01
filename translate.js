@@ -34,6 +34,6 @@ function translate(property = 'data-translate') {
 
   for (let i = 0; i < translateables.length; i++) {
     let string = translateables[i].getAttribute(property);
-    translateables[i].textContent = browser.i18n.getMessage(string);
+    translateables[i].textContent = chrome.i18n.getMessage(string);
   }
 }

@@ -1,5 +1,5 @@
 "use strict";
-console.clear();
+// console.clear();
 
 var aliveRules = {};
 var runningRules = {};
@@ -12,8 +12,7 @@ const REGEXP_ESCAPE = /[.+\-?^${}()|[\]\\]/g;
  * @param {url} URL to check
 */
 function protocolIsApplicable(url) {
-  var anchor =  document.createElement('a');
-  anchor.href = url;
+  var anchor = new URL(url);
   return APPLICABLE_PROTOCOLS.includes(anchor.protocol);
 }
 /*
@@ -21,9 +20,8 @@ function protocolIsApplicable(url) {
  * @param {url} URL
 */
 function getDomainName(url) {
-  var anchor =  document.createElement('a');
-  anchor.href = url;
-  return anchor.hostname;
+  var anchor = new URL(url);
+  return anchor.host;
 }
 /*
  * Display Notifications
@@ -31,13 +29,13 @@ function getDomainName(url) {
  * @param {data} tabId for notification id, notification title, and notification message
 */
 function displayNotifications(data){
-    var tabId = (data.tabId) ? data.tabId.toString() : "alive-notification";
-    browser.notifications.create(tabId, {
+    var tabId = (data.tabId) ? (data.tabId.toString() + "-" + Date.now()) : "";
+    chrome.notifications.create(tabId, {
         "type": "basic",
+        "iconUrl": "assets/icon/icon.png",
         "title": data.title,
-        "iconUrl": browser.runtime.getURL("assets/icon/icon.svg"),
         "message": data.message
-    });
+      });
 }
 /**
  * Get Time in String Format
@@ -68,9 +66,9 @@ function setItem() {
  * @param {} nil
 */
 function updateBadge() {
-  totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
-  if (totRunningRules > 0) { browser.browserAction.setBadgeText({text: totRunningRules.toString()}); }
-  else { browser.browserAction.setBadgeText({text: ""}); }
+  var totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
+  if (totRunningRules > 0) { chrome.action.setBadgeText({text: totRunningRules.toString()}); }
+  else { chrome.action.setBadgeText({text: ""}); }
 }
 /*
  * Update Rules to the Local Variable aliveRules
@@ -78,6 +76,12 @@ function updateBadge() {
  * @param {aliveSettings} Session Alive Settings
 */
 function updateRules(aliveSettings) {aliveRules = aliveSettings;}
+/*
+ * Update Session Variable to the Local Variable runningRules
+ *
+ * @param {aliveSession} Session Alive Session Variables
+*/
+function updateVariables(aliveSession) {runningRules = aliveSession;}
 /*
  * Delete Rules from the runningRules object by key
  *
@@ -106,6 +110,9 @@ function deleteRulesByKey(key) {
   }
   // Delete runningRules Object by key
   delete runningRules[key];
+  // Save variable to Session
+  chrome.storage.session.clear()
+  .then(() => { chrome.storage.session.set(runningRules); });
   //Update Browser Badge
   updateBadge();
 }
@@ -115,7 +122,7 @@ function deleteRulesByKey(key) {
  * @param {} nil
 */
 function handleStorageChange() {
-  var updateAliveRules = browser.storage.local.get();
+  var updateAliveRules = chrome.storage.local.get();
   updateAliveRules.then(updateRules, onError);
 }
 /*
@@ -237,7 +244,7 @@ function handleInitializeMsg(tab) {
         responseMsg = {
           response: "Run foreground rule",
           run: "foreground",
-          rule_id: key,
+          rule_id: (key+tab_domain+tab_cookieStoreId),
           timeout: timeoutVal,
           beepEnabled: reloadSound
         };
@@ -252,6 +259,8 @@ function handleInitializeMsg(tab) {
         runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
+        // Save variable to Session
+        chrome.storage.session.set(runningRules);
         return responseMsg;
       }
 
@@ -274,7 +283,7 @@ function handleInitializeMsg(tab) {
         responseMsg = {
           response: "Run background rule",
           run: "background",
-          rule_id: key, 
+          rule_id: (key+tab_domain+tab_cookieStoreId), 
           timeout: timeoutVal, 
           loopUri: loopUriVal,
           headRequestOnly: headRequest
@@ -290,6 +299,8 @@ function handleInitializeMsg(tab) {
         runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
+        // Save variable to Session
+        chrome.storage.session.set(runningRules);
         return responseMsg;
       }
     }
@@ -411,14 +422,14 @@ function handleAddRule(tabs){
     if (!duplicate) {
       // Save the Settings to {rules} Object with (key) as [aliveRuleId]
       rules[aliveRuleId] = aliveSettings;
-      // Save the {rules} Object to browser.storage.local
-      browser.storage.local.set(rules)
+      // Save the {rules} Object to chrome.storage.local
+      chrome.storage.local.set(rules)
       .then(setItem, onError);
-      browser.tabs.reload();
+      chrome.tabs.reload();
     }
     else {
       displayNotifications({title: "Add a Rule", message: "Current URL is already used in another Rule! Please disable or delete that Rule first."});
-      browser.tabs.reload();
+      chrome.tabs.reload();
     }
   }
   else {
@@ -452,15 +463,20 @@ function handleMessage(request, sender, sendResponse) {
       var sendToTabId = parseInt(runningRules[request.rule_id].tabId, 10);
       // Delete runningRules Object by key
       delete runningRules[request.rule_id];
+      // Save variable to Session
+      chrome.storage.session.clear()
+      .then(() => { chrome.storage.session.set(runningRules); });
       // Update Browser Badge
       updateBadge();
       // If Tab id is valid, send the cancel message to tab
       if (!isNaN(sendToTabId)) {
         response = { response: "Cancel running rule", run: "cancel" };
-        browser.tabs.sendMessage(sendToTabId, response);
+        chrome.tabs.sendMessage(sendToTabId, response);
       }
       // Re-send the rules list for display
-      browser.runtime.sendMessage({event: "Running-rules-list", rules: runningRules});
+      sendResponse({event: "Running-rules-list", rules: runningRules});
+      //this tells the browser that use the sendResponse argument after the listener has returned.
+      return true;
     }
     break;
 // Reload message from the Tab.
@@ -468,36 +484,50 @@ function handleMessage(request, sender, sendResponse) {
     if (runningRules.hasOwnProperty(request.rule_id)) {//Key exists in RunningRules
       runningRules[request.rule_id].run_count += 1;
       runningRules[request.rule_id].last_run = getTimeStr();
+      // Save variable to Session
+      chrome.storage.session.set(runningRules);
       if (runningRules[request.rule_id].notif_fgreload) {
         notificationTitle = "Page auto-reload rule: " + runningRules[request.rule_id].rule_name;
         notificationMessage = "Page is reloading to keep the session alive!";
         displayNotifications({tabId: senderTab, title: notificationTitle, message: notificationMessage});
       }
     }
+    sendResponse();
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Ajax request details message from the Tab. Delegated to handleAjax()
     case "Ajax":
     response = handleAjax({id: sender.tab.id,status: request.status,responseUrl:request.responseUrl});
     //console.log(response);
-    browser.tabs.sendMessage(sender.tab.id, response);
     if (runningRules.hasOwnProperty(request.rule_id)) {//Key exists in RunningRules
       runningRules[request.rule_id].run_count += 1;
       runningRules[request.rule_id].last_run = getTimeStr();
+      // Save variable to Session
+      chrome.storage.session.set(runningRules);
       if (runningRules[request.rule_id].notif_bgrequest) {
         notificationTitle = "Background request rule: " + runningRules[request.rule_id].rule_name;
         notificationMessage = "Background Request to keep the session alive is successful!";
         displayNotifications({tabId: senderTab, title: notificationTitle, message: notificationMessage});
       }
     }
+    sendResponse(response);
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Running rules request message from Pop-up script.
     case "Running-rules":
-    browser.runtime.sendMessage({event: "Running-rules-list", rules: runningRules});
+    sendResponse({event: "Running-rules-list", rules: runningRules});
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Add a Rule for Current Page request message from Pop-up script.
     case "Add-Rule-Current-Page":
-      let querying = browser.tabs.query({currentWindow: true, active: true});
+      let querying = chrome.tabs.query({currentWindow: true, active: true});
       querying.then(handleAddRule, onError);
+      sendResponse();
+      //this tells the browser that use the sendResponse argument after the listener has returned.
+      return true;
     break;
 
     default:
@@ -507,30 +537,35 @@ function handleMessage(request, sender, sendResponse) {
 /*
 ** Add Listener to Handle the message from Content Script
 */
-browser.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleMessage);
 /*
 ** On Initialization, fetch stored settings and update the local variable with them.
 */
-const gettingStoredSettings = browser.storage.local.get();
+const gettingStoredSettings = chrome.storage.local.get();
 gettingStoredSettings.then(updateRules, onError);
+/*
+** On Initialization, fetch stored session variables and update the local variable with them.
+*/
+const initSessionStorage = chrome.storage.session.get();
+initSessionStorage.then(updateVariables, onError);
 /*
 ** Log the Storage Change details
 */
-browser.storage.onChanged.addListener(handleStorageChange);
+chrome.storage.onChanged.addListener(handleStorageChange);
 /*
 ** Open onboarding and upboarding page
 */
-browser.runtime.onInstalled.addListener(function (details) {
+chrome.runtime.onInstalled.addListener(function (details) {
   switch (details.reason) {
     case "install": {
-      const url = browser.runtime.getURL("views/installed.html");
-      browser.tabs.create({ url: url, active: true});
+      const url = chrome.runtime.getURL("views/installed.html");
+      chrome.tabs.create({ url: url, active: true});
       var notificationMessage = "Thanks for installing Session Alive extension! Create a rule to keep your Session Alive!";
       displayNotifications({title: "Session Alive Installed",message: notificationMessage});
     } break;
     case "update": {
-      const url = browser.runtime.getURL("views/updated.html");
-      browser.tabs.create({ url: url, active: true});
+      const url = chrome.runtime.getURL("views/updated.html");
+      chrome.tabs.create({ url: url, active: true});
     } break;
     default:
     //Default Switch - No Action";
@@ -539,14 +574,14 @@ browser.runtime.onInstalled.addListener(function (details) {
 /*
 ** Open feedback page for offboarding users
 */
-browser.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link");
+chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link");
 /*
 ** Add Listener to handle Notification click
 */
-browser.notifications.onClicked.addListener(function(notificationId) {
-  browser.notifications.clear(notificationId);
+chrome.notifications.onClicked.addListener(function(notificationId) {
+  chrome.notifications.clear(notificationId);
   var tabId = parseInt(notificationId, 10);
-  if (!isNaN(tabId)) { browser.tabs.update(tabId, { active: true }); }
+  if (!isNaN(tabId)) { chrome.tabs.update(tabId, { active: true }); }
 });
 /*
  * Tab Events - Tab Remove handle
@@ -560,6 +595,9 @@ function handleRemoved(tabId, removeInfo) {
     if (runningRules.hasOwnProperty(key)) {
       if (runningRules[key].tabId == tabId) {
         delete runningRules[key];
+        // Save variable to Session
+        chrome.storage.session.clear()
+        .then(() => { chrome.storage.session.set(runningRules); });
         //Update Browser Badge
         updateBadge();
       }
@@ -569,4 +607,4 @@ function handleRemoved(tabId, removeInfo) {
 /*
 ** Add Listener to Handle the Tab Close [onRemoved]
 */
-browser.tabs.onRemoved.addListener(handleRemoved);
+chrome.tabs.onRemoved.addListener(handleRemoved);
