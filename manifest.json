@@ -1,9 +1,24 @@
 {
-    "manifest_version": 2,
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
-    "version": "2.2",
+    "version": "2.3",
+    "manifest_version": 2,
     "homepage_url": "https://github.com/arunelias/session-alive",
+    "background":{
+        "scripts": ["background.js"]
+    },
+    "permissions": [
+        "tabs", 
+        "notifications", 
+        "storage", 
+        "contextualIdentities", 
+        "cookies"
+    ],
+    "browser_action":{
+        "default_popup": "popup/popup.html",
+        "default_title": "Session Alive",
+        "default_icon": "assets/icon/icon.svg"
+    },
     "icons": {
         "16": "assets/icon/icon.svg",
         "32": "assets/icon/icon.svg",
@@ -17,26 +32,17 @@
             "strict_min_version": "57.0"
       }
     },
-    "permissions": ["tabs", "notifications", "storage", "contextualIdentities", "cookies"],
-    "background":{
-        "scripts": ["background.js"]
-    },
-    "browser_action":{
-        "default_icon": "assets/icon/icon.svg",
-        "default_title": "Session Alive",
-        "default_popup": "popup/popup.html"
-    },
     "content_scripts":[
         {
             "matches": ["<all_urls>"],
-            "js": ["inject/cs.js"],
-            "css": ["inject/cs.css"]
+            "css": ["inject/cs.css"],
+            "js": ["inject/cs.js"]
         }
     ],
     "options_ui": {
         "browser_style": false,
         "open_in_tab": true,
-        "page": "settings/settings.html"
+        "page": "settings/settings.html?"
     },
     "web_accessible_resources": [
         "beep.wav"

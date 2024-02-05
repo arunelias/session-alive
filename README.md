@@ -3,7 +3,9 @@
 # Session Alive
 This add-on is used to keep the session alive for any website. Install and forget the session timeout messages.
 
-Install from the [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/) website.
+Install from
+- [Add-ons for Firefox](https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/) for Firefox 
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham) for Chrome.
 
 > Inspired by [Dmitri Snytkine's](https://github.com/snytkine) wonderful Chrome add-on [Staying Alive](https://chrome.google.com/webstore/detail/staying-alive/lhobbakbeomfcgjallalccfhfcgleinm)
 
@@ -142,11 +144,13 @@ For example: a web site uses [jQuery session timeout](https://plugins.jquery.com
 
 ## Installation
 
-- Download the repository and extract.
+- Select correct branch for [Firefox](https://github.com/arunelias/session-alive/tree/v2branch) or [Chrome](https://github.com/arunelias/session-alive/tree/chrome-mv3)
+- Download the repository.
+- Extract the ZIP file.
 - Go to [`about:debugging`](https://developer.mozilla.org/en-US/docs/Tools/about:debugging) and load it as temporary extension
 
 ## Browser compatibility:
-<img title="Firefox" src="readme-resources/browsers/firefox.png" style="width: 64px;"/>
+<img title="Firefox" src="readme-resources\browsers\firefox-browser-logo.svg" style="width: 64px;"/>&nbsp;<img title="Chrome" src="readme-resources\browsers\chrome-logo-m100.svg" style="width: 64px;"/>
 
 ## Firefox Multi-Account Container Support:
 Version 2.0 now Support [Multi-Account Containers](https://support.mozilla.org/en-US/kb/containers)

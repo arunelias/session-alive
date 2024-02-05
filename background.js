@@ -1,5 +1,5 @@
 "use strict";
-console.clear();
+// console.clear();
 
 var aliveRules = {};
 var runningRules = {};
@@ -12,8 +12,7 @@ const REGEXP_ESCAPE = /[.+\-?^${}()|[\]\\]/g;
  * @param {url} URL to check
 */
 function protocolIsApplicable(url) {
-  var anchor =  document.createElement('a');
-  anchor.href = url;
+  var anchor = new URL(url);
   return APPLICABLE_PROTOCOLS.includes(anchor.protocol);
 }
 /*
@@ -21,9 +20,8 @@ function protocolIsApplicable(url) {
  * @param {url} URL
 */
 function getDomainName(url) {
-  var anchor =  document.createElement('a');
-  anchor.href = url;
-  return anchor.hostname;
+  var anchor = new URL(url);
+  return anchor.host;
 }
 /*
  * Display Notifications
@@ -31,13 +29,13 @@ function getDomainName(url) {
  * @param {data} tabId for notification id, notification title, and notification message
 */
 function displayNotifications(data){
-    var tabId = (data.tabId) ? data.tabId.toString() : "alive-notification";
+    var tabId = (data.tabId) ? (data.tabId.toString() + "-" + Date.now()) : "";
     browser.notifications.create(tabId, {
         "type": "basic",
+        "iconUrl": browser.runtime.getURL("assets/icon/icon.png"),
         "title": data.title,
-        "iconUrl": browser.runtime.getURL("assets/icon/icon.svg"),
         "message": data.message
-    });
+      });
 }
 /**
  * Get Time in String Format
@@ -68,7 +66,7 @@ function setItem() {
  * @param {} nil
 */
 function updateBadge() {
-  totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
+  var totRunningRules = Object.keys(runningRules).length;//Get No. of Running Rules
   if (totRunningRules > 0) { browser.browserAction.setBadgeText({text: totRunningRules.toString()}); }
   else { browser.browserAction.setBadgeText({text: ""}); }
 }
@@ -78,6 +76,12 @@ function updateBadge() {
  * @param {aliveSettings} Session Alive Settings
 */
 function updateRules(aliveSettings) {aliveRules = aliveSettings;}
+/*
+ * Update Session Variable to the Local Variable runningRules
+ *
+ * @param {aliveSession} Session Alive Session Variables
+*/
+function updateVariables(aliveSession) {runningRules = aliveSession;}
 /*
  * Delete Rules from the runningRules object by key
  *
@@ -106,6 +110,9 @@ function deleteRulesByKey(key) {
   }
   // Delete runningRules Object by key
   delete runningRules[key];
+  // Save variable to Session
+  // browser.storage.session.clear()
+  // .then(() => { browser.storage.session.set(runningRules); });
   //Update Browser Badge
   updateBadge();
 }
@@ -237,7 +244,7 @@ function handleInitializeMsg(tab) {
         responseMsg = {
           response: "Run foreground rule",
           run: "foreground",
-          rule_id: key,
+          rule_id: (key+tab_domain+tab_cookieStoreId),
           timeout: timeoutVal,
           beepEnabled: reloadSound
         };
@@ -252,6 +259,8 @@ function handleInitializeMsg(tab) {
         runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
+        // Save variable to Session
+        // browser.storage.session.set(runningRules);
         return responseMsg;
       }
 
@@ -274,7 +283,7 @@ function handleInitializeMsg(tab) {
         responseMsg = {
           response: "Run background rule",
           run: "background",
-          rule_id: key, 
+          rule_id: (key+tab_domain+tab_cookieStoreId), 
           timeout: timeoutVal, 
           loopUri: loopUriVal,
           headRequestOnly: headRequest
@@ -290,6 +299,8 @@ function handleInitializeMsg(tab) {
         runningRules[key+tab_domain+tab_cookieStoreId].domain = tab_domain;
         //Update Browser Badge
         updateBadge();
+        // Save variable to Session
+        // browser.storage.session.set(runningRules);
         return responseMsg;
       }
     }
@@ -452,6 +463,9 @@ function handleMessage(request, sender, sendResponse) {
       var sendToTabId = parseInt(runningRules[request.rule_id].tabId, 10);
       // Delete runningRules Object by key
       delete runningRules[request.rule_id];
+      // Save variable to Session
+      // browser.storage.session.clear()
+      // .then(() => { browser.storage.session.set(runningRules); });
       // Update Browser Badge
       updateBadge();
       // If Tab id is valid, send the cancel message to tab
@@ -460,7 +474,9 @@ function handleMessage(request, sender, sendResponse) {
         browser.tabs.sendMessage(sendToTabId, response);
       }
       // Re-send the rules list for display
-      browser.runtime.sendMessage({event: "Running-rules-list", rules: runningRules});
+      sendResponse({event: "Running-rules-list", rules: runningRules});
+      //this tells the browser that use the sendResponse argument after the listener has returned.
+      return true;
     }
     break;
 // Reload message from the Tab.
@@ -468,36 +484,50 @@ function handleMessage(request, sender, sendResponse) {
     if (runningRules.hasOwnProperty(request.rule_id)) {//Key exists in RunningRules
       runningRules[request.rule_id].run_count += 1;
       runningRules[request.rule_id].last_run = getTimeStr();
+      // Save variable to Session
+      // browser.storage.session.set(runningRules);
       if (runningRules[request.rule_id].notif_fgreload) {
         notificationTitle = "Page auto-reload rule: " + runningRules[request.rule_id].rule_name;
         notificationMessage = "Page is reloading to keep the session alive!";
         displayNotifications({tabId: senderTab, title: notificationTitle, message: notificationMessage});
       }
     }
+    sendResponse();
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Ajax request details message from the Tab. Delegated to handleAjax()
     case "Ajax":
     response = handleAjax({id: sender.tab.id,status: request.status,responseUrl:request.responseUrl});
     //console.log(response);
-    browser.tabs.sendMessage(sender.tab.id, response);
     if (runningRules.hasOwnProperty(request.rule_id)) {//Key exists in RunningRules
       runningRules[request.rule_id].run_count += 1;
       runningRules[request.rule_id].last_run = getTimeStr();
+      // Save variable to Session
+      // browser.storage.session.set(runningRules);
       if (runningRules[request.rule_id].notif_bgrequest) {
         notificationTitle = "Background request rule: " + runningRules[request.rule_id].rule_name;
         notificationMessage = "Background Request to keep the session alive is successful!";
         displayNotifications({tabId: senderTab, title: notificationTitle, message: notificationMessage});
       }
     }
+    sendResponse(response);
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Running rules request message from Pop-up script.
     case "Running-rules":
-    browser.runtime.sendMessage({event: "Running-rules-list", rules: runningRules});
+    sendResponse({event: "Running-rules-list", rules: runningRules});
+    //this tells the browser that use the sendResponse argument after the listener has returned.
+    return true;
     break;
 // Add a Rule for Current Page request message from Pop-up script.
     case "Add-Rule-Current-Page":
       let querying = browser.tabs.query({currentWindow: true, active: true});
       querying.then(handleAddRule, onError);
+      sendResponse();
+      //this tells the browser that use the sendResponse argument after the listener has returned.
+      return true;
     break;
 
     default:
@@ -513,6 +543,11 @@ browser.runtime.onMessage.addListener(handleMessage);
 */
 const gettingStoredSettings = browser.storage.local.get();
 gettingStoredSettings.then(updateRules, onError);
+/*
+** On Initialization, fetch stored session variables and update the local variable with them.
+*/
+// const initSessionStorage = browser.storage.session.get();
+// initSessionStorage.then(updateVariables, onError);
 /*
 ** Log the Storage Change details
 */
@@ -560,6 +595,9 @@ function handleRemoved(tabId, removeInfo) {
     if (runningRules.hasOwnProperty(key)) {
       if (runningRules[key].tabId == tabId) {
         delete runningRules[key];
+        // Save variable to Session
+        // browser.storage.session.clear()
+        // .then(() => { browser.storage.session.set(runningRules); });
         //Update Browser Badge
         updateBadge();
       }

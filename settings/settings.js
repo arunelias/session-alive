@@ -96,7 +96,9 @@ function storeSettings() {
     document.getElementById("save-success-next-step").style.display = "block";
     triggerUriLink.href = (fgTriggerUriInput.value && fgTriggerUriInput.value !== "") ? fgTriggerUriInput.value : triggerUriInput.value;
     // Check for Wildcard and trim wildcard
-    triggerUriLink.href = triggerUriLink.href.substring(0, triggerUriLink.href.indexOf('*'));
+    if (triggerUriLink.href.indexOf('*') > -1) {
+      triggerUriLink.href = triggerUriLink.href.substring(0, triggerUriLink.href.indexOf('*'));
+    }
   }
   // Keep the URL as in format given as URL can contain base64 encoded strings
   aliveSettings = {

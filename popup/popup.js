@@ -27,7 +27,8 @@ document.getElementById('add-rule-current-page').addEventListener('click', funct
  */
 function cancelRunningRuleByKey(key) {
 	//Request Cancel Rule to Background script
-  browser.runtime.sendMessage({event: "Cancel", rule_id:key});
+  browser.runtime.sendMessage({event: "Cancel", rule_id:key})
+  .then(handleMessage);
 }
 /*
  * Handle Running Rules list message from Background Script
@@ -134,7 +135,8 @@ function handleMessage(request, sender, sendResponse) {
 */
 function handleUpdated(tabId, changeInfo, tabInfo) {
   //Request Running rules details from background script
-  browser.runtime.sendMessage({event: "Running-rules"});
+  browser.runtime.sendMessage({event: "Running-rules"})
+  .then(handleMessage);
 }
 /*
  * Contextual Identities initialize
@@ -156,7 +158,8 @@ function initPopup() {
   //Initialize Contextual Identities
   initIdentities();
 	//Request Running rules details from background script
-  browser.runtime.sendMessage({event: "Running-rules"});
+  browser.runtime.sendMessage({event: "Running-rules"})
+  .then(handleMessage);
   // Apply localized/translated strings
   translate();
 }

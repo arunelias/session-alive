@@ -62,7 +62,7 @@ var scheduleRule = function (rule) {
 		if (rule.headRequestOnly === true) { xhr.open("HEAD", uri, true); }
 		else { xhr.open("GET", uri, true); }
 		xhr.setRequestHeader("Cache-Control", "no-cache");
-		xhr.onreadystatechange = function() { if(xhr.readyState === XMLHttpRequest.DONE) { browser.runtime.sendMessage({event: "Ajax", rule_id: id, status: xhr.status, responseUrl: xhr.responseURL}); } };
+		xhr.onreadystatechange = function() { if(xhr.readyState === XMLHttpRequest.DONE) { console.log("Ajax message send"); var sending = browser.runtime.sendMessage({event: "Ajax", rule_id: id, status: xhr.status, responseUrl: xhr.responseURL}); sending.then(handleResponse, handleError); } };
 		xhr.send();
 	}, (timeout * 60000));
 };
