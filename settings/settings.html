@@ -208,12 +208,41 @@
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="card small mb-2">
+                        <div class="card-header text-center"><strong>Rules Import/ Export</strong></div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                To import rules, click Import Rules. Select a valid <code>.json</code> file to import.</br>
+                                To export rules, click Export Rules. Exported data is downloaded as a file with extension <code>.json</code>.
+                            </p>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <input type="file" id="fileElem" accept=".json" style="display:none" />
+                                    <button class="btn btn-danger float-left" type="button" id="import_rules_json">Import Rules</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-primary float-right" type="button" id="export_rules_json">Export Rules</button>
+                                </div>
+                                <fieldset class="col-sm-11 border mx-auto p-2"><legend class="col-form-label w-auto">Import type:&nbsp;</legend>
+                                  <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="importType" id="import_replace" value="option1" checked>
+                                    <label class="form-check-label" for="import_replace"> Replace </label>
+                                  </div>
+                                  <div class="form-check-inline">
+                                    <input class="form-check-input" type="radio" name="importType" id="import_append" value="option2">
+                                    <label class="form-check-label" for="import_append"> Append </label>
+                                  </div>
+                                </fieldset>
+                              </div>
+                        </div> 
+                    </div>
+                    <div class="card small mb-2">
                         <div class="card-header text-center"><strong>Release Notes</strong></div>
                         <div class="card-body">
                             <ul class="list-unstyled">
                                 <li><strong>2.3</strong>
                                     <ul class="list-unstyled">
                                         <li><strong>New Feature:</strong> Google chrome browser is now supported. Install from <a href="https://chrome.google.com/webstore/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham" target="_blank" class="text-info">Chrome Web Store</a></li>
+                                        <li><strong>New Feature:</strong> Rules Import/ Export option. </li>
                                         <li>Minor code changes for porting to Manifest Version 3 to support Google chrome browser</li>
                                     </ul>
                                 </li>
@@ -234,7 +263,7 @@
                             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link" class="card-link text-info" title="Help me improve Session Alive by leaving feedback">Feedback</a>
                             <a href="https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/privacy/" class="card-link text-info" title="Read the privacy policy for this add-on">Privacy Policy</a>
                         </div>
-                        <div class="card-footer text-right">&copy; Arun Elias - 2022</div>
+                        <div class="card-footer text-right">&copy; Arun Elias - 2024</div>
                     </div>
                 </div>
             </div>
