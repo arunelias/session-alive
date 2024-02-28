@@ -1,0 +1,30 @@
+{
+  "extensionName": {
+    "message": "Session Alive",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Håll din session vid liv på alla webbplatser och logga aldrig ut...",
+    "description": "Description of the extension."
+  },
+  "settingsHeading": {
+    "message": "Inställningar",
+    "description": "Settings heading."
+  },
+  "addRuleCurrentPageHeading": {
+    "message": "+ Lägg till en regel för den här sidan",
+    "description": "Add a Rule for Current Page button text"
+  },
+  "noRunningRulesInfo": {
+    "message": "Inga regler körs! Du kan hantera reglerna på inställningssidan.",
+    "description": "No rules running info message."
+  },
+  "aliveDivTitle": {
+    "message": "Schemalägg sidomladdning för att hålla sessionen vid liv!",
+    "description": "Content Script Alive Div tool-tip."
+  },
+  "aliveDivContent": {
+    "message": "Klicka för att pausa omladdning av sidan i 1 minut",
+    "description": "Content Script Alive Div mouse hover info message."
+  }
+}
