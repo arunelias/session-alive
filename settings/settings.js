@@ -135,16 +135,16 @@ function updateEditor(aliveSettings) {
   // Display the rule editor and hide others
   document.getElementById("rule-editor").style.display = "block";
   document.getElementById("delete_rule").style.display = "inline-block";
-	document.getElementById("rule-editor-header").textContent = "Edit Rule";
+  document.getElementById("rule-editor-header").textContent = "Edit Rule";
   document.getElementById("save-success").style.display = "none";
   document.getElementById("delete-success").style.display = "none";
   document.getElementById("rule-info").style.display = "none";
   document.getElementById("rule-editor-form").classList.remove("was-validated");
   // Iterate through the keys in {aliveSettings} Object
-	for (var key in aliveSettings) {
-		if (aliveSettings.hasOwnProperty(key)) {
-			//console.log(key + " -> " + aliveSettings[key]);
-			ruleNameInput.value = aliveSettings[key].rule_name;
+  for (var key in aliveSettings) {
+    if (aliveSettings.hasOwnProperty(key)) {
+      //console.log(key + " -> " + aliveSettings[key]);
+      ruleNameInput.value = aliveSettings[key].rule_name;
       ruleDisableInput.checked = aliveSettings[key].rule_disable;
       triggerUriInput.value = aliveSettings[key].trigger_uri;
       loopUriInput.value = aliveSettings[key].loop_uri;
@@ -164,8 +164,8 @@ function updateEditor(aliveSettings) {
       notifBgexitInput.checked = aliveSettings[key].notif_bgexit;
       notifFgreloadInput.checked = aliveSettings[key].notif_fgreload;
       notifFgexitInput.checked = aliveSettings[key].notif_fgexit;
-		}
-	}
+    }
+  }
   // Set loop interval as required if trigger URL existing
   if(triggerUriInput.value !== "") { loopIntervalInput.setAttribute("required","required"); }
   else { loopIntervalInput.removeAttribute("required"); }
@@ -188,11 +188,11 @@ function updateEditor(aliveSettings) {
 */
 function updateUI(aliveSettings) {
   aliveRules = aliveSettings;
-	var ruleListingNode = document.getElementById("rule-listing");
-	// Clear the listing by removing nodes
+  var ruleListingNode = document.getElementById("rule-listing");
+  // Clear the listing by removing nodes
   while (ruleListingNode.lastChild) {
-		ruleListingNode.removeChild(ruleListingNode.lastChild);
-	}
+    ruleListingNode.removeChild(ruleListingNode.lastChild);
+  }
   var totRules = Object.keys(aliveSettings).length;//Get No. of Rules
   //If No Rules display the editor
   if (totRules === 0) {
@@ -200,8 +200,8 @@ function updateUI(aliveSettings) {
     addNewRule();
     return null;
   }
-	// Iterate through the keys in {aliveSettings} Object
-	for (var key in aliveSettings) {
+  // Iterate through the keys in {aliveSettings} Object
+  for (var key in aliveSettings) {
     if (aliveSettings.hasOwnProperty(key)) {
       console.log("Settings id: " + key + " -> ");
       console.log(aliveSettings[key]);
@@ -222,11 +222,11 @@ function updateUI(aliveSettings) {
 ** Delete the settings after confirming
 */
 function deleteSettings() {
-	var aliveRuleId = ruleIdInput.value;
-	if (confirm("Are you sure you want to delete this rule?")) {
-		chrome.storage.local.remove(aliveRuleId)
-		.then(removedItem, onError);
-	}
+  var aliveRuleId = ruleIdInput.value;
+  if (confirm("Are you sure you want to delete this rule?")) {
+    chrome.storage.local.remove(aliveRuleId)
+    .then(removedItem, onError);
+  }
 }
 /*
  * Retrieve the settings by the Key -> Rule Id
@@ -234,12 +234,78 @@ function deleteSettings() {
  * @param {rule_id} rule id as (key) of the settings storage
 */
 function getSettingsByKey(rule_id) {
-	const gettingSettingsByKey = chrome.storage.local.get(rule_id);
-	gettingSettingsByKey.then(updateEditor, onError);
+  const gettingSettingsByKey = chrome.storage.local.get(rule_id);
+  gettingSettingsByKey.then(updateEditor, onError);
   //Reset the Rule Editor form
   document.getElementById("rule-editor-form").reset();
-	//Set the Rule Id in the Editor
+  //Set the Rule Id in the Editor
   ruleIdInput.value = rule_id;
+}
+/*
+ * Saving the imported rules
+ *
+ * @param {aliveData} rules Array of objects
+*/
+function saveRules(aliveData) {
+  chrome.storage.local.set(aliveData)
+    .then(setItem, onError);
+}
+/*
+** Import handler
+*/
+function handleImport() {
+  try {
+    var raw = JSON.parse(reader.result);
+    // Filter the raw data with Session Alive key
+    var aliveData = Object.keys(raw)
+      .filter(key => key.startsWith('sa'))
+      .reduce((obj, key, index) => {
+        if (document.getElementById("import_append").checked) {
+          // Generate new rule id if the append option is selected
+          var ruleNewId = "sa" + (new Date()).getTime() + (index + 10);
+          obj[ruleNewId] = raw[key];
+        } else {
+          obj[key] = raw[key];
+        }
+        return obj;
+      }, {});
+    var totRules = Object.keys(aliveData).length;//Get No. of Rules
+    if (totRules === 0) {
+      alert("Selected JSON file does not contain valid rules!");
+    } else {
+      // Confirm replacing the rules before clearing storage if the replace option is selected
+      if (document.getElementById("import_replace").checked) {
+        if (confirm("Are you sure you want to replace all rules?")) {
+          chrome.storage.local.clear()
+          .then(saveRules(aliveData), onError);
+        } else {
+          return;
+        }
+      } else {
+        // Append the rules
+        saveRules(aliveData);
+      }
+    }
+  } catch (error) {
+    alert("Selected file is not a valid JSON file!");
+  }
+}
+/*
+** Export the settings
+*/
+function exportSettings() {
+  var totRules = Object.keys(aliveRules).length;//Get No. of Rules
+  if (totRules === 0) {
+    alert("No rules found to export!");
+  } else {
+    const blob = new Blob([JSON.stringify(aliveRules, null, 2)], {type: "application/json"});
+    const file = new File([blob], "session_alive_rules.json", {type: "application/json"})
+    const link = document.createElement("a");
+    link.download = "session_alive_rules.json";
+    link.href = window.URL.createObjectURL(file);
+    link.click();
+    link.remove();
+  }
 }
 /*
 ** On opening the options page, fetch stored settings and update the UI with them.
@@ -257,10 +323,40 @@ addRulesButton.addEventListener("click", addNewRule);
 const deleteButton = document.getElementById("delete_rule");
 deleteButton.addEventListener("click", deleteSettings);
 /*
+** Add Event Listener for File Reader for JSON Import
+** Add Event Listener On change event of File select field.
+** Add Event Listener On click event of Import rules button.
+*/
+const reader = new FileReader();
+reader.addEventListener("loadend", handleImport);
+const importButton = document.getElementById("import_rules_json");
+const fileElem = document.getElementById("fileElem");
+fileElem.addEventListener("change", () => {
+  if (fileElem.files.length == 1) {
+    reader.readAsText(fileElem.files[0]);
+  }
+},
+false
+);
+importButton.addEventListener("click", (e) => {
+    if (fileElem) {
+      // Trigger the File select field
+      fileElem.value = '';
+      fileElem.click();
+    }
+  },
+  false,
+);
+/*
+** Add Event Listener On click event of Export rules button.
+*/
+const exportButton = document.getElementById("export_rules_json");
+exportButton.addEventListener("click", exportSettings);
+/*
 ** Add Event Listener On blur event of Background Trigger URL input.
 */
 triggerUriInput.addEventListener("blur", function( event ) {
-	if(event.target.value !== "") {// If Background Trigger URL is provided, Background Interval is required
+  if(event.target.value !== "") {// If Background Trigger URL is provided, Background Interval is required
     loopIntervalInput.setAttribute("required","required");
   }
   else {loopIntervalInput.removeAttribute("required");}
@@ -302,13 +398,13 @@ triggerUriInput.addEventListener("blur", function( event ) {
 ** Add Event Listener On blur event of Foreground Auto-Reload Trigger URL input.
 */
 fgTriggerUriInput.addEventListener("blur", function( event ) {
-	if(event.target.value !== "") {// If Foreground Auto-Reload Trigger URL is provided, Foreground Interval is required
+  if(event.target.value !== "") {// If Foreground Auto-Reload Trigger URL is provided, Foreground Interval is required
     fgIntervalInput.setAttribute("required","required");
     triggerUriInput.removeAttribute("required");
     triggerUriInput.setCustomValidity("");
     loopIntervalInput.removeAttribute("required");
   }
-	else {//Reset required attributes if cleared
+  else {//Reset required attributes if cleared
     fgIntervalInput.removeAttribute("required");
     triggerUriInput.setAttribute("required","required");
     loopIntervalInput.setAttribute("required","required");

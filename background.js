@@ -574,7 +574,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 /*
 ** Open feedback page for offboarding users
 */
-chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link");
+// chrome.runtime.setUninstallURL("https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link");
 /*
 ** Add Listener to handle Notification click
 */
