@@ -1,17 +1,17 @@
 body {
-    font-family: 'Segoe UI', 'San Francisco', 'Ubuntu', sans-serif;
-    background: #f9f9fa;
-    min-width: 465px;
+	font-family: 'Segoe UI', 'San Francisco', 'Ubuntu', sans-serif;
+	min-width: 465px;
 }
-tr {
-	background: #fff;
-}
-.rule-name-th, .rule-name-td {
+
+.rule-name-th,
+.rule-name-td {
 	padding: 0px 0px 0px 20px !important;
 }
+
 .rule-usercontext-th {
 	padding: 0px !important;
 }
+
 .rule-usercontext-td {
 	padding: 0px !important;
 	width: 20px;
@@ -21,14 +21,69 @@ tr {
 	fill: attr(data-identity-color);
 	filter: url("filters.svg#fill")
 }
-th, td {
+
+th,
+td {
 	padding: 0px 20px !important;
 }
-button { outline:0 !important; }
-button.close::before { content: "\000D7" }
+
+button {
+	outline: 0 !important;
+}
+
+button.close::before {
+	content: "\000D7"
+}
+
 #rules-table {
 	display: none;
 }
+
 #no-rules {
 	display: none;
+}
+
+.nowrap-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 200px;
+	/* display: inline-block; */
+}
+
+.icon-help {
+	/* Copied from .btn-close */
+	--icon-help-color: #000;
+	--icon-help-bg: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"/></svg>');
+	--icon-help-opacity: 0.5;
+	--icon-help-hover-opacity: 0.75;
+	--icon-help-focus-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+	--icon-help-focus-opacity: 1;
+	--icon-help-disabled-opacity: 0.25;
+	--icon-help-white-filter: invert(1) grayscale(100%) brightness(200%);
+	box-sizing: content-box;
+	width: 1em;
+	height: 1em;
+	padding: .25em .25em;
+	color: var(--icon-help-color);
+	background: transparent var(--icon-help-bg) center/1.25em auto no-repeat;
+	border: 0;
+	border-radius: .375rem;
+	opacity: var(--icon-help-opacity)
+}
+
+.icon-help:hover {
+	color: var(--icon-help-color);
+	text-decoration: none;
+	opacity: var(--icon-help-hover-opacity)
+}
+
+.icon-help:focus {
+	outline: 0;
+	box-shadow: var(--icon-help-focus-shadow);
+	opacity: var(--icon-help-focus-opacity)
+}
+
+[data-bs-theme=dark] .icon-help {
+	filter: var(--icon-help-white-filter);
 }

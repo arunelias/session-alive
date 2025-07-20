@@ -22,5 +22,69 @@
   "aliveDivContent": {
     "message": "Klicken, um Neuladen der Seite für eine Minute zu pausieren",
     "description": "Content Script Alive Div mouse hover info message."
+  },
+  "addRuleSuccessTitle": {
+    "message": "Regel hinzufügen",
+    "description": "Success notification title when a Rule is added from Popup."
+  },
+  "addRuleSuccessMessage": {
+    "message": "Regel erfolgreich gespeichert!",
+    "description": "Success notification message when a Rule is added from Popup"
+  },
+  "addRuleDupErrorTitle": {
+    "message": "Regel hinzufügen",
+    "description": "Duplicate URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleDupErrorMessage": {
+    "message": "Die aktuelle URL wird bereits in einer anderen Regel verwendet! Bitte deaktivieren oder löschen Sie diese Regel zuerst.",
+    "description": "Duplicate URL Error notification message when a Rule is added from Popup"
+  },
+  "addRuleInvErrorTitle": {
+    "message": "Regel hinzufügen",
+    "description": "Invalid URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleInvErrorMessage": {
+    "message": "Regel konnte nicht erstellt werden! Die aktuelle URL ist ungültig.",
+    "description": "Invalid URL Error notification message when a Rule is added from Popup"
+  },
+  "fgRuleSuccessTitle": {
+    "message": "Regel für automatische Seitenaktualisierung: ",
+    "description": "Foreground Rule run success notification title"
+  },
+  "fgRuleSuccessMessage": {
+    "message": "Die Seite wird aktualisiert, um die Sitzung aktiv zu halten!",
+    "description": "Foreground Rule run success notification message"
+  },
+  "bgRuleSuccessTitle": {
+    "message": "Hintergrundanforderungsregel: ",
+    "description": "Background Rule run success notification title"
+  },
+  "bgRuleSuccessMessage": {
+    "message": "Hintergrundanforderung zur Aufrechterhaltung der Sitzung war erfolgreich!",
+    "description": "Background Rule run success notification message"
+  },
+  "fgRuleStoppedTitle": {
+    "message": "Regel für automatische Seitenaktualisierung: ",
+    "description": "Foreground Rule stopped notification title"
+  },
+  "fgRuleStoppedMessage": {
+    "message": "Regel für automatische Seitenaktualisierung im Vordergrund gestoppt!",
+    "description": "Foreground Rule stopped notification message"
+  },
+  "bgRuleStoppedTitle": {
+    "message": "Hintergrundanforderungsregel: ",
+    "description": "Background Rule stopped notification title"
+  },
+  "bgRuleStoppedMessage": {
+    "message": "Hintergrundanforderungsregel gestoppt! Die Serverantwort war nicht 200 OK!",
+    "description": "Background Rule stopped notification message"
+  },
+  "aliveInstalledTitle": {
+    "message": "Session Alive installiert",
+    "description": "Session Alive installed notification title"
+  },
+  "aliveInstalledMessage": {
+    "message": "Vielen Dank für die Installation der Session Alive-Erweiterung! Erstellen Sie eine Regel, um Ihre Sitzung aktiv zu halten!",
+    "description": "Session Alive installed notification message"
   }
 }

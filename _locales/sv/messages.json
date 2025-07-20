@@ -4,91 +4,91 @@
     "description": "Name of the extension."
   },
   "extensionDescription": {
-    "message": "Keep your Session Alive at any website and never get logged out...",
+    "message": "Håll din session vid liv på alla webbplatser och logga aldrig ut...",
     "description": "Description of the extension."
   },
   "settingsHeading": {
-    "message": "Settings",
+    "message": "Inställningar",
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Add a Rule for this page",
+    "message": "+ Lägg till en regel för den här sidan",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
-    "message": "No Rules are running! You can manage the rules in the settings page.",
+    "message": "Inga regler körs! Du kan hantera reglerna på inställningssidan.",
     "description": "No rules running info message."
   },
   "aliveDivTitle": {
-    "message": "Scheduled Page Reload to keep the Session Alive!",
+    "message": "Schemalägg sidomladdning för att hålla sessionen vid liv!",
     "description": "Content Script Alive Div tool-tip."
   },
   "aliveDivContent": {
-    "message": "Click to snooze page reload for 1 minute",
+    "message": "Klicka för att pausa omladdning av sidan i 1 minut",
     "description": "Content Script Alive Div mouse hover info message."
   },
   "addRuleSuccessTitle": {
-    "message": "Add a Rule",
+    "message": "Lägg till en regel",
     "description": "Success notification title when a Rule is added from Popup."
   },
   "addRuleSuccessMessage": {
-    "message": "Rule saved successfully!",
+    "message": "Regeln har sparats framgångsrikt!",
     "description": "Success notification message when a Rule is added from Popup"
   },
   "addRuleDupErrorTitle": {
-    "message": "Add a Rule",
+    "message": "Lägg till en regel",
     "description": "Duplicate URL Error notification title when a Rule is added from Popup."
   },
   "addRuleDupErrorMessage": {
-    "message": "Current URL is already used in another Rule! Please disable or delete that Rule first.",
+    "message": "Den aktuella URL:en används redan i en annan regel! Inaktivera eller ta bort den regeln först.",
     "description": "Duplicate URL Error notification message when a Rule is added from Popup"
   },
   "addRuleInvErrorTitle": {
-    "message": "Add a Rule",
+    "message": "Lägg till en regel",
     "description": "Invalid URL Error notification title when a Rule is added from Popup."
   },
   "addRuleInvErrorMessage": {
-    "message": "Unable to create a Rule! The current URL is invalid.",
+    "message": "Kunde inte skapa regeln! Den aktuella URL:en är ogiltig.",
     "description": "Invalid URL Error notification message when a Rule is added from Popup"
   },
   "fgRuleSuccessTitle": {
-    "message": "Page auto-reload rule: ",
+    "message": "Regel för automatisk sidladdning: ",
     "description": "Foreground Rule run success notification title"
   },
   "fgRuleSuccessMessage": {
-    "message": "Page is reloading to keep the session alive!",
+    "message": "Sidan laddas om för att hålla sessionen aktiv!",
     "description": "Foreground Rule run success notification message"
   },
   "bgRuleSuccessTitle": {
-    "message": "Background request rule: ",
+    "message": "Regel för bakgrundsförfrågan: ",
     "description": "Background Rule run success notification title"
   },
   "bgRuleSuccessMessage": {
-    "message": "Background Request to keep the session alive is successful!",
+    "message": "Bakgrundsförfrågan för att hålla sessionen aktiv lyckades!",
     "description": "Background Rule run success notification message"
   },
   "fgRuleStoppedTitle": {
-    "message": "Page auto-reload rule: ",
+    "message": "Regel för automatisk sidladdning: ",
     "description": "Foreground Rule stopped notification title"
   },
   "fgRuleStoppedMessage": {
-    "message": "Foreground page auto-reload Rule stopped!",
+    "message": "Regel för automatisk sidladdning i förgrunden stoppad!",
     "description": "Foreground Rule stopped notification message"
   },
   "bgRuleStoppedTitle": {
-    "message": "Background request rule: ",
+    "message": "Regel för bakgrundsförfrågan: ",
     "description": "Background Rule stopped notification title"
   },
   "bgRuleStoppedMessage": {
-    "message": "Background Request Rule stopped! The server response was not 200 OK!",
+    "message": "Regel för bakgrundsförfrågan stoppad! Serverns svar var inte 200 OK!",
     "description": "Background Rule stopped notification message"
   },
   "aliveInstalledTitle": {
-    "message": "Session Alive Installed",
+    "message": "Session Alive installerad",
     "description": "Session Alive installed notification title"
   },
   "aliveInstalledMessage": {
-    "message": "Thanks for installing Session Alive extension! Create a rule to keep your Session Alive!",
+    "message": "Tack för att du installerade tillägget Session Alive! Skapa en regel för att hålla din session aktiv!",
     "description": "Session Alive installed notification message"
   }
 }

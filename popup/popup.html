@@ -1,55 +1,62 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="../assets/icon/icon.png">
-    <title>Session Alive!</title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
-    <!-- Custom styles for this template -->
-    <link href="popup.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container-fluid">
-      <!-- Settings Row -->
-      <div class="row">
-        <div class="col-10 text-left">
-          <button id="add-rule-current-page" class="btn btn-primary btn-sm m-1" data-translate="addRuleCurrentPageHeading">+ Add a Rule for this page</button>
-          <button id="settings" class="btn btn-primary btn-sm m-1" data-translate="settingsHeading">Settings</button>
-        </div>
-        <div class="col-2 text-right"><button id="close" type="button" class="close m-1" aria-label="Close" title="Close Pop-up"></button></div>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" href="../assets/icon/icon.png">
+  <title>Session Alive!</title>
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
+  <!-- Custom styles for this template -->
+  <link href="popup.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <!-- Settings Row -->
+    <div class="row">
+      <div class="col-9 text-start">
+        <button id="add-rule-current-page" class="btn btn-primary btn-sm m-1" data-translate="addRuleCurrentPageHeading">+ Add a Rule for this page</button>
+        <button id="settings" class="btn btn-primary btn-sm m-1" data-translate="settingsHeading">Settings</button>
       </div>
-      <!-- Running Rules Row -->
-      <div class="row">
-        <div class="col-12">
-          <div id="no-rules" class="alert alert-info" data-translate="noRunningRulesInfo">No Rules are running! You can manage the rules in the settings page.</div>
-          <table id="rules-table" class="table table-hover table-sm small">
-            <thead>
-              <tr>
-                <th class="rule-name-th">Rule</th>
-                <th class="rule-usercontext-th">&nbsp;</th>
-                <th>Interval</th>
-                <th>Last&nbsp;Run</th>
-                <th>Count</th>
-                <th>Cancel</th>
-              </tr>
-            </thead>
-            <tbody id="running-rule-listing">
-              <tr>
-                <td class="rule-name-td" title="https://example.com">Rule-1</td>
-                <td class="rule-usercontext-td">&nbsp;</td>
-                <td>5 m</td>
-                <td>00:00 AM</td>
-                <td>999</td>
-                <td><button id="close" type="button" class="close" title="Cancel Rule"></button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="col-3 text-end">
+        <!-- <a href="/views/installed.html" class="card-link text-info" title="Help"><span class="icon-help"></span></a> -->
+        <button id="help" type="button" class="icon-help m-1" aria-label="Help" title="Help"></button>
+        <button id="close" type="button" class="btn-close m-1" aria-label="Close" title="Close Pop-up"></button>
       </div>
+    </div>
+    <!-- Running Rules Row -->
+    <div class="row">
+      <div class="col-12">
+        <div id="no-rules" class="alert alert-info" data-translate="noRunningRulesInfo">No Rules are running! You can manage the rules in the settings page.</div>
+        <table id="rules-table" class="table table-hover table-sm small">
+          <thead>
+            <tr>
+              <th class="rule-name-th">Rule</th>
+              <th class="rule-usercontext-th">&nbsp;</th>
+              <th>Interval</th>
+              <th>Last&nbsp;Run</th>
+              <th>Count</th>
+              <th>Cancel</th>
+            </tr>
+          </thead>
+          <tbody id="running-rule-listing">
+            <tr>
+              <td class="rule-name-td" title="https://example.com">Rule-1</td>
+              <td class="rule-usercontext-td">&nbsp;</td>
+              <td>5 m</td>
+              <td>00:00 AM</td>
+              <td>999</td>
+              <td><button id="cancel" type="button" class="btn-close" title="Cancel Rule"></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <!-- Custom JavaScript -->
     <script src="/translate.js"></script>
     <script src="popup.js"></script>
-  </body>
+</body>
+
 </html>
