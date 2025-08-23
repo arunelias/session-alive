@@ -12,7 +12,7 @@
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Voeg een regel toe voor deze pagina",
+    "message": "+ Toevoegen Regel",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
@@ -28,7 +28,7 @@
     "description": "Content Script Alive Div mouse hover info message."
   },
   "addRuleSuccessTitle": {
-    "message": "Regel toevoegen",
+    "message": "Toevoegen Regel",
     "description": "Success notification title when a Rule is added from Popup."
   },
   "addRuleSuccessMessage": {
@@ -36,7 +36,7 @@
     "description": "Success notification message when a Rule is added from Popup"
   },
   "addRuleDupErrorTitle": {
-    "message": "Regel toevoegen",
+    "message": "Toevoegen Regel",
     "description": "Duplicate URL Error notification title when a Rule is added from Popup."
   },
   "addRuleDupErrorMessage": {
@@ -44,7 +44,7 @@
     "description": "Duplicate URL Error notification message when a Rule is added from Popup"
   },
   "addRuleInvErrorTitle": {
-    "message": "Regel toevoegen",
+    "message": "Toevoegen Regel",
     "description": "Invalid URL Error notification title when a Rule is added from Popup."
   },
   "addRuleInvErrorMessage": {

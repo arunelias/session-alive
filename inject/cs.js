@@ -1,6 +1,7 @@
-/*
-** Content Script - Session Alive
-*/
+/**
+ * @fileoverview Content script for Session Alive Chrome extension.
+ * This script is responsible for maintaining session activity in a web page.
+ */
 var aliveDiv;
 var aliveDivInfo;
 var idTimer;
@@ -90,8 +91,14 @@ var scheduleRule = function (rule) {
 		xhr.setRequestHeader("Cache-Control", "no-cache");
 		xhr.onreadystatechange = function () { if (xhr.readyState === XMLHttpRequest.DONE) { console.log("Ajax message send"); var sending = chrome.runtime.sendMessage({ event: "Ajax", rule_id: id, status: xhr.status, responseUrl: xhr.responseURL }); sending.then(handleResponse, handleError); } };
 		xhr.send();
-		// Dispatch a mousemove event to show activity in the page
-		document.body.dispatchEvent(new Event('mousemove'));
+		// Dispatch bubbling keyboard events to show activity in the page
+		const keydown = new KeyboardEvent('keydown', { bubbles: true });
+		const keyup = new KeyboardEvent('keyup', { bubbles: true });
+
+		[window, document, document.body].forEach(target => {
+			target.dispatchEvent(keydown);
+			target.dispatchEvent(keyup);
+		});
 	}, (timeout * 60000));
 };
 
@@ -171,9 +178,9 @@ function handleResponse(message) {
 	if (message.run == "cancel") {
 		//Cancel Running Rule
 		if (aliveDiv && aliveDivInfo) { // Check if elements are defined
-            aliveDiv.style.display = "none";
-            aliveDivInfo.style.display = "none";
-        }
+			aliveDiv.style.display = "none";
+			aliveDivInfo.style.display = "none";
+		}
 		if (typeof idTimer !== "undefined") { clearTimeout(idTimer); }
 	}
 }

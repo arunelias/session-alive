@@ -11,6 +11,10 @@
     "message": "Einstellungen",
     "description": "Settings heading."
   },
+  "addRuleCurrentPageHeading": {
+    "message": "+ Hinzufügen Regel",
+    "description": "Add a Rule for Current Page button text"
+  },
   "noRunningRulesInfo": {
     "message": "Es sind keine Regeln aktiv! Klicke auf die Schaltfläche Einstellungen, um neue Regeln hinzuzufügen.",
     "description": "No rules running info message."
@@ -24,7 +28,7 @@
     "description": "Content Script Alive Div mouse hover info message."
   },
   "addRuleSuccessTitle": {
-    "message": "Regel hinzufügen",
+    "message": "Hinzufügen Regel",
     "description": "Success notification title when a Rule is added from Popup."
   },
   "addRuleSuccessMessage": {
@@ -32,7 +36,7 @@
     "description": "Success notification message when a Rule is added from Popup"
   },
   "addRuleDupErrorTitle": {
-    "message": "Regel hinzufügen",
+    "message": "Hinzufügen Regel",
     "description": "Duplicate URL Error notification title when a Rule is added from Popup."
   },
   "addRuleDupErrorMessage": {
@@ -40,7 +44,7 @@
     "description": "Duplicate URL Error notification message when a Rule is added from Popup"
   },
   "addRuleInvErrorTitle": {
-    "message": "Regel hinzufügen",
+    "message": "Hinzufügen Regel",
     "description": "Invalid URL Error notification title when a Rule is added from Popup."
   },
   "addRuleInvErrorMessage": {
@@ -48,7 +52,7 @@
     "description": "Invalid URL Error notification message when a Rule is added from Popup"
   },
   "fgRuleSuccessTitle": {
-    "message": "Regel für automatische Seitenaktualisierung: ",
+    "message": "Vordergrundregel: ",
     "description": "Foreground Rule run success notification title"
   },
   "fgRuleSuccessMessage": {
@@ -56,7 +60,7 @@
     "description": "Foreground Rule run success notification message"
   },
   "bgRuleSuccessTitle": {
-    "message": "Hintergrundanforderungsregel: ",
+    "message": "Hintergrundregel: ",
     "description": "Background Rule run success notification title"
   },
   "bgRuleSuccessMessage": {
@@ -64,7 +68,7 @@
     "description": "Background Rule run success notification message"
   },
   "fgRuleStoppedTitle": {
-    "message": "Regel für automatische Seitenaktualisierung: ",
+    "message": "Vordergrundregel: ",
     "description": "Foreground Rule stopped notification title"
   },
   "fgRuleStoppedMessage": {
@@ -72,11 +76,11 @@
     "description": "Foreground Rule stopped notification message"
   },
   "bgRuleStoppedTitle": {
-    "message": "Hintergrundanforderungsregel: ",
+    "message": "Hintergrundregel: ",
     "description": "Background Rule stopped notification title"
   },
   "bgRuleStoppedMessage": {
-    "message": "Hintergrundanforderungsregel gestoppt! Die Serverantwort war nicht 200 OK!",
+    "message": "Hintergrundregel gestoppt! Die Serverantwort war nicht 200 OK!",
     "description": "Background Rule stopped notification message"
   },
   "aliveInstalledTitle": {

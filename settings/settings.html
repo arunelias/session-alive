@@ -47,8 +47,7 @@
                         <span class="badge rounded-pill text-bg-success">Next Step:</span>
                         Navigate to the
                         <a id="trigger_uri_link" href="#" class="alert-link" target="_blank">Trigger URL
-                            <img class="bg-white" src="../assets/settings/Open.svg" width="14px" height="14px"
-                                style="height: 0.7em; vertical-align: top;"></a>
+                            <img class="bg-white" src="../assets/settings/Open.svg" width="14px" height="14px" style="height: 0.7em; vertical-align: top;"></a>
                         to start the Rule.
                     </div>
                     <button class="btn btn-primary mb-4" id="addNewRuleButton">Add New Rule</button>
@@ -77,19 +76,15 @@
                                 <div class="accordion mb-2" id="accordionRuleDetails">
                                     <div class="accordion-item">
                                         <div class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                                 Rule Details
                                             </button>
                                         </div>
-                                        <div id="collapseOne" class="accordion-collapse collapse show"
-                                            data-bs-parent="#accordionRuleDetails">
+                                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionRuleDetails">
                                             <div class="accordion-body">
                                                 <input type="hidden" class="form-control" id="rule_id">
                                                 <label for="rule_name" class="mb-0">Rule Name:</label>
-                                                <input type="text" class="form-control" id="rule_name"
-                                                    required="required" placeholder="Rule Name" maxlength="30">
+                                                <input type="text" class="form-control" id="rule_name" required="required" placeholder="Rule Name" maxlength="30">
                                                 <div class="invalid-feedback">Valid rule name is required.</div>
                                                 <div class="text-secondary small">Give a short name for the Rule.</div>
                                                 <div class="input-group pt-3 mb-0">
@@ -107,31 +102,22 @@
                                 <div class="accordion mb-2" id="accordionBackground">
                                     <div class="accordion-item">
                                         <div class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapseTwo" aria-expanded="true"
-                                                aria-controls="collapseTwo">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                                 Background Request Options
                                             </button>
                                         </div>
-                                        <div id="collapseTwo" class="accordion-collapse collapse show"
-                                            data-bs-parent="#accordionBackground">
+                                        <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionBackground">
                                             <div class="accordion-body">
-                                                <label for="trigger_uri" class="mb-0">Trigger URL: <span
-                                                        class="badge rounded-pill text-bg-info">asterisk (*) wildcard is
+                                                <label for="trigger_uri" class="mb-0">Trigger URL: <span class="badge rounded-pill text-bg-info">asterisk (*) wildcard is
                                                         supported</span></label>
-                                                <input type="text" class="form-control" id="trigger_uri"
-                                                    placeholder="Trigger URL. eg: https://myapp.com/welcome"
-                                                    required="required" pattern="(https?://.+).{3,}">
+                                                <input type="text" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="(https?://.+).{3,}">
                                                 <div id="trigger_uri_fb" class="invalid-feedback">Valid trigger URL
                                                     (including "http://" or "https://") is required.</div>
                                                 <div class="text-secondary small">Navigating to this URL will start the
                                                     background request loop.</div>
 
-                                                <label for="loop_uri" class="pt-3 mb-0">Background Request URL: <span
-                                                        class="badge rounded-pill text-bg-info">Optional</span></label>
-                                                <input type="url" class="form-control" id="loop_uri"
-                                                    placeholder="Optional Background Request URL. eg: https://myapp.com/options"
-                                                    pattern="(https?://.+).{3,}">
+                                                <label for="loop_uri" class="pt-3 mb-0">Background Request URL: <span class="badge rounded-pill text-bg-info">Optional</span></label>
+                                                <input type="url" class="form-control" id="loop_uri" placeholder="Optional Background Request URL. eg: https://myapp.com/options" pattern="(https?://.+).{3,}">
                                                 <div class="invalid-feedback">Valid background request URL (including
                                                     "http://" or "https://") is required.</div>
                                                 <div class="text-secondary small">Optional. If not supplied Trigger URL
@@ -139,9 +125,7 @@
 
                                                 <label for="loop_interval" class="pt-3 mb-0">Request Interval (in
                                                     minutes):</label>
-                                                <input type="number" class="form-control" id="loop_interval"
-                                                    required="required" placeholder="Request Interval" maxlength="3"
-                                                    min="1" max="999">
+                                                <input type="number" class="form-control" id="loop_interval" required="required" placeholder="Request Interval" maxlength="3" min="1" max="999">
                                                 <div class="invalid-feedback">Valid Request Interval (in minutes) is
                                                     required.</div>
                                                 <div class="text-secondary small">Request interval for the background
@@ -172,21 +156,16 @@
                                 <div class="accordion mb-2" id="accordionForeground">
                                     <div class="accordion-item">
                                         <div class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseThree"
-                                                aria-expanded="true" aria-controls="collapseThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                                                 <span class="badge rounded-pill text-bg-info me-2">Optional</span>
                                                 Foreground Request Options
                                             </button>
                                         </div>
-                                        <div id="collapseThree" class="accordion-collapse collapse"
-                                            data-bs-parent="#accordionForeground">
+                                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionForeground">
                                             <div class="accordion-body">
                                                 <label for="fg_trigger_uri" class="mb-0">Foreground Auto-Reload Trigger
                                                     URL:</label>
-                                                <input type="url" class="form-control" id="fg_trigger_uri"
-                                                    placeholder="Foreground Auto-Reload Trigger URL. eg: https://example.com/user/"
-                                                    pattern="https?://.+">
+                                                <input type="url" class="form-control" id="fg_trigger_uri" placeholder="Foreground Auto-Reload Trigger URL. eg: https://example.com/user/" pattern="https?://.+">
                                                 <div id="fgTriggerUriFb" class="invalid-feedback">Valid trigger URL
                                                     (including "http://" or "https://") is required.</div>
                                                 <div class="text-secondary text-justify small">Some websites implement a
@@ -203,9 +182,7 @@
 
                                                 <label for="fg_interval" class="pt-3 mb-0">Foreground Auto-Reload
                                                     Interval (in minutes):</label>
-                                                <input type="number" class="form-control" id="fg_interval"
-                                                    placeholder="Foreground Auto-Reload Interval" maxlength="3" min="1"
-                                                    max="999">
+                                                <input type="number" class="form-control" id="fg_interval" placeholder="Foreground Auto-Reload Interval" maxlength="3" min="1" max="999">
                                                 <div class="invalid-feedback">Valid Foreground Auto-Reload Interval (in
                                                     minutes) is required.</div>
                                                 <div class="text-secondary small">Foreground Auto-Reload interval for
@@ -218,9 +195,7 @@
                                                     </div>
                                                     <div class="form-control"> Play beep sound before reloading page.
                                                     </div>
-                                                    <button type="button" class="input-group-text btn btn-info btn-sm"
-                                                        id="sound_test"><img src="../assets/settings/play-16.svg"
-                                                            width="24px" height="24px"> Test</button>
+                                                    <button type="button" class="input-group-text btn btn-info btn-sm" id="sound_test"><img src="../assets/settings/play-16.svg" width="24px" height="24px"> Test</button>
                                                     <audio id="sound_element">
                                                         <source src="../beep.wav" type="audio/wav">
                                                     </audio>
@@ -232,15 +207,12 @@
                                 <div class="accordion mb-2" id="accordionNotifications">
                                     <div class="accordion-item">
                                         <div class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#collapseFour"
-                                                aria-expanded="true" aria-controls="collapseFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
                                                 <span class="badge rounded-pill text-bg-info me-2">Optional</span>
                                                 Notification Options
                                             </button>
                                         </div>
-                                        <div id="collapseFour" class="accordion-collapse collapse"
-                                            data-bs-parent="#accordionNotifications">
+                                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionNotifications">
                                             <div class="accordion-body">
                                                 <div>
                                                     <p>Display a browser notification when&hellip;</p>
@@ -278,8 +250,7 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary" id="submitButton">Add Rule</button>
-                                <button type="button" class="btn btn-danger" id="deleteButton"
-                                    style="display: none;">Delete Rule</button>
+                                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;">Delete Rule</button>
                                 <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
                             </form>
                         </div>
@@ -299,23 +270,19 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <input type="file" id="fileElem" accept=".json" style="display:none" />
-                                    <button class="btn btn-danger float-start" type="button"
-                                        id="import_rules_json">Import Rules</button>
+                                    <button class="btn btn-danger float-start" type="button" id="import_rules_json">Import Rules</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button class="btn btn-primary float-end" type="button"
-                                        id="export_rules_json">Export Rules</button>
+                                    <button class="btn btn-primary float-end" type="button" id="export_rules_json">Export Rules</button>
                                 </div>
                                 <fieldset class="col-sm-11 border mx-auto p-2">
                                     <legend class="col-form-label float-none w-auto">Import type:&nbsp;</legend>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="importType"
-                                            id="import_replace" value="option1" checked>
+                                        <input class="form-check-input" type="radio" name="importType" id="import_replace" value="option1" checked>
                                         <label class="form-check-label" for="import_replace"> Replace </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="importType"
-                                            id="import_append" value="option2">
+                                        <input class="form-check-input" type="radio" name="importType" id="import_append" value="option2">
                                         <label class="form-check-label" for="import_append"> Append </label>
                                     </div>
                                 </fieldset>
@@ -331,15 +298,14 @@
                                     <ul class="list-unstyled">
                                         <li><strong>New Feature:</strong> Dark Theme - Automatically adapts to your
                                             system's appearance settings. </li>
-                                        <li><strong>Improvement:</strong> Automatically generates rule names based on
+                                        <li><strong>Improvement:</strong> Automatically generates rule name based on
                                             the page title.</li>
                                         <li><strong>Upgrade:</strong> Bootstrap updated to the latest version. </li>
                                         <li><strong>Improvement:</strong> Improved overall performance. </li>
-                                        <li><strong>Improvement:</strong> Add Swedish (sv) language. Thank you <a
-                                                href="https://github.com/Sopor" target="_blank"
-                                                class="text-info">Sopor</a> for your <a
-                                                href="https://github.com/arunelias/session-alive/pull/44"
-                                                target="_blank" class="text-info">support.</a> </li>
+                                        <li><strong>Improvement:</strong> Add Swedish (sv) language. Thank you 
+                                            <a href="https://github.com/Sopor" target="_blank" class="text-info">Sopor</a> for your 
+                                            <a href="https://github.com/arunelias/session-alive/pull/44" target="_blank" class="text-info">support.</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -356,19 +322,11 @@
                                 If you want to contribute to this project or report an issue please visit the below
                                 GitHub page
                             </p>
-                            <a href="https://chromewebstore.google.com/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham/reviews"
-                                class="card-link text-info"
-                                title="How are you enjoying Session Alive? Rate your experience!"><span
-                                    class="Icon Icon-star-yellow"></span></a>
-                            <a href="/views/installed.html" class="card-link text-info" title="Help"><span
-                                    class="icon-help"></span></a>
-                            <a href="https://github.com/arunelias/session-alive" class="card-link text-info"
-                                title="Support Site">GitHub</a>
-                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link"
-                                class="card-link text-info"
-                                title="Help me improve Session Alive by leaving feedback">Feedback</a>
-                            <a href="https://chromewebstore.google.com/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham/privacy"
-                                class="card-link text-info" title="Read the privacy policy for this add-on">Privacy
+                            <a href="https://chromewebstore.google.com/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham/reviews" class="card-link text-info" title="How are you enjoying Session Alive? Rate your experience!"><span class="Icon Icon-star-yellow"></span></a>
+                            <a href="/views/installed.html" class="card-link text-info" title="Help"><span class="icon-help"></span></a>
+                            <a href="https://github.com/arunelias/session-alive" class="card-link text-info" title="Support Site">GitHub</a>
+                            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link" class="card-link text-info" title="Help me improve Session Alive by leaving feedback">Feedback</a>
+                            <a href="https://chromewebstore.google.com/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham/privacy" class="card-link text-info" title="Read the privacy policy for this add-on">Privacy
                                 Policy</a>
                         </div>
                         <div class="card-footer text-end">&copy; Arun Elias - 2025</div>

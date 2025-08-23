@@ -49,7 +49,7 @@ body {
 }
 
 .sidebar {
-    height: 100vh;
+    height: calc(100vh - 70px);
     position: fixed;
     top: 70px;
     left: 0;
@@ -63,6 +63,10 @@ body {
 .sidebar h5 {
     border-bottom: 2px solid var(--accent-color);
     padding-bottom: 0.5rem;
+}
+
+#rulesList {
+    padding-bottom: 15px;
 }
 
 .main-content {
