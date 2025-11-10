@@ -12,7 +12,7 @@
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Voeg een regel toe voor deze pagina",
+    "message": "+ Toevoegen Regel",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
@@ -26,5 +26,69 @@
   "aliveDivContent": {
     "message": "Klik om de pagina opnieuw in te sluimeren gedurende 1 minuut",
     "description": "Content Script Alive Div mouse hover info message."
+  },
+  "addRuleSuccessTitle": {
+    "message": "Toevoegen Regel",
+    "description": "Success notification title when a Rule is added from Popup."
+  },
+  "addRuleSuccessMessage": {
+    "message": "Regel succesvol opgeslagen!",
+    "description": "Success notification message when a Rule is added from Popup"
+  },
+  "addRuleDupErrorTitle": {
+    "message": "Toevoegen Regel",
+    "description": "Duplicate URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleDupErrorMessage": {
+    "message": "De huidige URL wordt al gebruikt in een andere regel! Schakel die regel eerst uit of verwijder deze.",
+    "description": "Duplicate URL Error notification message when a Rule is added from Popup"
+  },
+  "addRuleInvErrorTitle": {
+    "message": "Toevoegen Regel",
+    "description": "Invalid URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleInvErrorMessage": {
+    "message": "Kan geen regel maken! De huidige URL is ongeldig.",
+    "description": "Invalid URL Error notification message when a Rule is added from Popup"
+  },
+  "fgRuleSuccessTitle": {
+    "message": "Regel voor automatisch vernieuwen van pagina: ",
+    "description": "Foreground Rule run success notification title"
+  },
+  "fgRuleSuccessMessage": {
+    "message": "De pagina wordt vernieuwd om de sessie actief te houden!",
+    "description": "Foreground Rule run success notification message"
+  },
+  "bgRuleSuccessTitle": {
+    "message": "Regel voor achtergrondverzoek: ",
+    "description": "Background Rule run success notification title"
+  },
+  "bgRuleSuccessMessage": {
+    "message": "Achtergrondverzoek om de sessie actief te houden is succesvol!",
+    "description": "Background Rule run success notification message"
+  },
+  "fgRuleStoppedTitle": {
+    "message": "Regel voor automatisch vernieuwen van pagina: ",
+    "description": "Foreground Rule stopped notification title"
+  },
+  "fgRuleStoppedMessage": {
+    "message": "Regel voor automatisch vernieuwen van pagina in de voorgrond gestopt!",
+    "description": "Foreground Rule stopped notification message"
+  },
+  "bgRuleStoppedTitle": {
+    "message": "Regel voor achtergrondverzoek: ",
+    "description": "Background Rule stopped notification title"
+  },
+  "bgRuleStoppedMessage": {
+    "message": "Regel voor achtergrondverzoek gestopt! De serverreactie was niet 200 OK!",
+    "description": "Background Rule stopped notification message"
+  },
+  "aliveInstalledTitle": {
+    "message": "Session Alive geïnstalleerd",
+    "description": "Session Alive installed notification title"
+  },
+  "aliveInstalledMessage": {
+    "message": "Bedankt voor het installeren van de Session Alive-extensie! Maak een regel aan om je sessie actief te houden!",
+    "description": "Session Alive installed notification message"
   }
 }

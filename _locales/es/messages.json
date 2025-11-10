@@ -12,7 +12,7 @@
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Agregar una regla para esta página",
+    "message": "+ Añadir Regla",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
@@ -26,5 +26,69 @@
   "aliveDivContent": {
     "message": "Haga clic para posponer la recarga de la página durante 1 minuto",
     "description": "Content Script Alive Div mouse hover info message."
+  },
+  "addRuleSuccessTitle": {
+    "message": "Añadir regla",
+    "description": "Success notification title when a Rule is added from Popup."
+  },
+  "addRuleSuccessMessage": {
+    "message": "¡Regla guardada con éxito!",
+    "description": "Success notification message when a Rule is added from Popup"
+  },
+  "addRuleDupErrorTitle": {
+    "message": "Añadir regla",
+    "description": "Duplicate URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleDupErrorMessage": {
+    "message": "¡La URL actual ya está utilizada en otra regla! Por favor, desactiva o elimina esa regla primero.",
+    "description": "Duplicate URL Error notification message when a Rule is added from Popup"
+  },
+  "addRuleInvErrorTitle": {
+    "message": "Añadir regla",
+    "description": "Invalid URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleInvErrorMessage": {
+    "message": "¡No se pudo crear la regla! La URL actual es inválida.",
+    "description": "Invalid URL Error notification message when a Rule is added from Popup"
+  },
+  "fgRuleSuccessTitle": {
+    "message": "Regla de recarga automática de página: ",
+    "description": "Foreground Rule run success notification title"
+  },
+  "fgRuleSuccessMessage": {
+    "message": "¡La página se está recargando para mantener la sesión activa!",
+    "description": "Foreground Rule run success notification message"
+  },
+  "bgRuleSuccessTitle": {
+    "message": "Regla de solicitud en segundo plano: ",
+    "description": "Background Rule run success notification title"
+  },
+  "bgRuleSuccessMessage": {
+    "message": "¡La solicitud en segundo plano para mantener la sesión activa fue exitosa!",
+    "description": "Background Rule run success notification message"
+  },
+  "fgRuleStoppedTitle": {
+    "message": "Regla de recarga automática de página: ",
+    "description": "Foreground Rule stopped notification title"
+  },
+  "fgRuleStoppedMessage": {
+    "message": "¡Regla de recarga automática de página en primer plano detenida!",
+    "description": "Foreground Rule stopped notification message"
+  },
+  "bgRuleStoppedTitle": {
+    "message": "Regla de solicitud en segundo plano: ",
+    "description": "Background Rule stopped notification title"
+  },
+  "bgRuleStoppedMessage": {
+    "message": "¡Regla de solicitud en segundo plano detenida! ¡La respuesta del servidor no fue 200 OK!",
+    "description": "Background Rule stopped notification message"
+  },
+  "aliveInstalledTitle": {
+    "message": "Session Alive instalado",
+    "description": "Session Alive installed notification title"
+  },
+  "aliveInstalledMessage": {
+    "message": "¡Gracias por instalar la extensión Session Alive! ¡Crea una regla para mantener tu sesión activa!",
+    "description": "Session Alive installed notification message"
   }
 }

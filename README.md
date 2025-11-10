@@ -31,10 +31,12 @@ Session Timeout is great for Production websites, but not for Development and Te
 
 ## Quick start
 
-Get started creating a new **[Foreground Auto-Reload Rule](#foreground-request-options)** with 1 minute interval.
+Sign-in to your website to navigate to the Dashboard/Welcome Page.
+Click the Session Alive extension icon <img id="icon" src="assets/icon/icon.svg" width="16px" height="16px"> in browser toolbar or extension menu or overflow menu.
+Click the **+ Add a Rule for this page** button.
 <img src="readme-resources/screenshots/qs_create_rule.png">
 
-Navigate to the Trigger URL in a new tab.
+Page is reloaded and Your session is now alive!
 <img src="readme-resources/screenshots/qs_trigger_url.png">
 
 --------------
@@ -60,7 +62,7 @@ A *Rule* should either contain *Background Request* or a *Foreground Request* wi
 #### Rule Details
 <img src="readme-resources/screenshots/rule-details.png">
 
-The Rule Name can be set here. Give a short name to identify the rule. The rule can be set as disabled using the _Disable the Rule_ check-box.
+The Rule Name can be set here. Enter a descriptive name to identify your rule. The rule can be set as disabled using the _Disable the Rule_ check-box.
 
 > If the rule is running, changes made are applied when the rule is restarted. To restart the rule, cancel the running rule and navigate to the _Trigger URL_ again to restart the rule.
 
@@ -71,8 +73,8 @@ The *Background Request Rule* is used to keep the session alive by requesting a 
 The page reload is not required as the process happens in the background using AJAX requests. 
 The following options are available in the Background Request Options:
 
-- **Trigger URL:**  
-  Navigating to the _Trigger URL_ will start the background request loop. The background request URL is requested at the set _Request Interval_. 
+- **Trigger URL: (asterisk (*) wildcard is supported)**  
+  When visited, this URL starts the background request process. The background request URL is requested at the set _Request Interval_. For example if _Trigger URL_ is set to `https://example.com/*`, navigating to `https://example.com/login` or `https://example.com/dashboard` *Background Request Rule* will start.
 
 - **Background Request URL: (Optional)**  
   If background request URL is different from the _Trigger URL_, it can be set here. Otherwise the _Trigger URL_ will be used by default.
@@ -88,7 +90,7 @@ The following options are available in the Background Request Options:
   When a background request fetches the URL, JavaScript code in the page is also executed. This may interfere with the page user is currently working with. To prevent this, [HEAD](https://tools.ietf.org/html/rfc2616#section-9.4) request can be opted, which will only fetch the page header information.
 
 > If a website implements a JavaScript idle timer in the browser itself, the *Background Request Rule* will not be enough to keep the session alive.
-> Use Advanced options or Foreground Auto-Reload options in this scenario.
+> Use Foreground Auto-Reload options in this scenario.
 
 #### Foreground Request Options
 <img src="readme-resources/screenshots/foreground-request-options.png">
@@ -120,34 +122,13 @@ Browser Notifications can be set here for the following conditions:
 - **Page is auto-reloading to keep session alive:**  
 - **Foreground Page auto-reload stopped:**  
 
-#### Background Request Advanced Options (To be Implemented)
-<img src="readme-resources/screenshots/background-request-advanced-options.png">
-
-These options can be useful when *Background Request Rule* is not enough to keep the session alive. The *Background Request Rule* alone is not enough when websites implements JavaScript idle timer in the browser itself. 
-
-> This option requires a minimum knowledge of web programming to be able to properly use it.
-
-The following options are available in the Foreground Request Options:
-
-- **JavaScript code to insert to the page:**  
-  The supplied JavaScript code is inserted to the page and executed. _Trigger URL_ is required along with this code.
-> The code is executed in all the frames of the page, provided that the [Same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) is satisfied.
-- **JavaScript Inject Trigger URL:**  
-  The supplied JavaScript code is inserted to any URL starting with the _Trigger URL_. For example if _Trigger URL_ is set to `https://example.com/user/`, the supplied JavaScript code is inserted and executed to pages `https://example.com/user/profile` or `https://example.com/user/account/details` on any tab of the browser window.
-
-###### Example
-For example: a web site uses [jQuery session timeout](https://plugins.jquery.com/sessionTimeout/) plug-in for session timeout, setting the following JavaScript code will set the session timeout as 200 minutes.
-```javascript
-    $.sessionTimeout({warnAfter: 9e6,redirAfter: 12e6});true;
-```
-> Keep a return value or _true;_ in the JavaScript code
-
 ## Installation
 
 - Select correct branch for [Firefox](https://github.com/arunelias/session-alive/tree/v2branch) or [Chrome](https://github.com/arunelias/session-alive/tree/chrome-mv3)
 - Download the repository.
 - Extract the ZIP file.
-- Go to [`about:debugging`](https://developer.mozilla.org/en-US/docs/Tools/about:debugging) and load it as temporary extension
+- For Firefox - Go to [`about:debugging`](https://developer.mozilla.org/en-US/docs/Tools/about:debugging) and load it as temporary extension
+- For Chrome - Go to [`chrome://extensions`](https://support.google.com/chrome_webstore/answer/2664769?hl=en) then turn on the **Developer mode** and click **Load unpacked** to load it as temporary extension
 
 ## Browser compatibility:
 <img title="Firefox" src="readme-resources\browsers\firefox-browser-logo.svg" style="width: 64px;"/>&nbsp;<img title="Chrome" src="readme-resources\browsers\chrome-logo-m100.svg" style="width: 64px;"/>

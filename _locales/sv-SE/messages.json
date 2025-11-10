@@ -12,7 +12,7 @@
     "description": "Settings heading."
   },
   "addRuleCurrentPageHeading": {
-    "message": "+ Lägg till en regel för den här sidan",
+    "message": "+ Lägg till Regel",
     "description": "Add a Rule for Current Page button text"
   },
   "noRunningRulesInfo": {
@@ -26,5 +26,69 @@
   "aliveDivContent": {
     "message": "Klicka för att pausa omladdning av sidan i 1 minut",
     "description": "Content Script Alive Div mouse hover info message."
+  },
+  "addRuleSuccessTitle": {
+    "message": "Lägg till regel",
+    "description": "Success notification title when a Rule is added from Popup."
+  },
+  "addRuleSuccessMessage": {
+    "message": "Regeln har sparats framgångsrikt!",
+    "description": "Success notification message when a Rule is added from Popup"
+  },
+  "addRuleDupErrorTitle": {
+    "message": "Lägg till regel",
+    "description": "Duplicate URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleDupErrorMessage": {
+    "message": "Den aktuella URL:en används redan i en annan regel! Inaktivera eller ta bort den regeln först.",
+    "description": "Duplicate URL Error notification message when a Rule is added from Popup"
+  },
+  "addRuleInvErrorTitle": {
+    "message": "Lägg till regel",
+    "description": "Invalid URL Error notification title when a Rule is added from Popup."
+  },
+  "addRuleInvErrorMessage": {
+    "message": "Kunde inte skapa regeln! Den aktuella URL:en är ogiltig.",
+    "description": "Invalid URL Error notification message when a Rule is added from Popup"
+  },
+  "fgRuleSuccessTitle": {
+    "message": "Regel för automatisk sidladdning: ",
+    "description": "Foreground Rule run success notification title"
+  },
+  "fgRuleSuccessMessage": {
+    "message": "Sidan laddas om för att hålla sessionen aktiv!",
+    "description": "Foreground Rule run success notification message"
+  },
+  "bgRuleSuccessTitle": {
+    "message": "Regel för bakgrundsförfrågan: ",
+    "description": "Background Rule run success notification title"
+  },
+  "bgRuleSuccessMessage": {
+    "message": "Bakgrundsförfrågan för att hålla sessionen aktiv lyckades!",
+    "description": "Background Rule run success notification message"
+  },
+  "fgRuleStoppedTitle": {
+    "message": "Regel för automatisk sidladdning: ",
+    "description": "Foreground Rule stopped notification title"
+  },
+  "fgRuleStoppedMessage": {
+    "message": "Regel för automatisk sidladdning i förgrunden stoppad!",
+    "description": "Foreground Rule stopped notification message"
+  },
+  "bgRuleStoppedTitle": {
+    "message": "Regel för bakgrundsförfrågan: ",
+    "description": "Background Rule stopped notification title"
+  },
+  "bgRuleStoppedMessage": {
+    "message": "Regel för bakgrundsförfrågan stoppad! Serverns svar var inte 200 OK!",
+    "description": "Background Rule stopped notification message"
+  },
+  "aliveInstalledTitle": {
+    "message": "Session Alive installerad",
+    "description": "Session Alive installed notification title"
+  },
+  "aliveInstalledMessage": {
+    "message": "Tack för att du installerade tillägget Session Alive! Skapa en regel för att hålla din session aktiv!",
+    "description": "Session Alive installed notification message"
   }
 }

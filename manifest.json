@@ -1,23 +1,28 @@
 {
     "name": "__MSG_extensionName__",
     "description": "__MSG_extensionDescription__",
-    "version": "2.3",
-    "manifest_version": 2,
+    "version": "2.4",
+    "manifest_version": 3,
     "homepage_url": "https://github.com/arunelias/session-alive",
-    "background":{
-        "scripts": ["background.js"]
+    "background": {
+        "service_worker": "background.js",
+        "scripts": [
+            "background.js"
+        ]
     },
     "permissions": [
-        "tabs", 
-        "notifications", 
-        "storage", 
-        "contextualIdentities", 
-        "cookies"
+        "tabs",
+        "notifications",
+        "storage",
+        "contextualIdentities"
     ],
-    "browser_action":{
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
         "default_popup": "popup/popup.html",
         "default_title": "Session Alive",
-        "default_icon": "assets/icon/icon.svg"
+        "default_icon": "assets/icon/icon.png"
     },
     "icons": {
         "16": "assets/icon/icon.svg",
@@ -26,17 +31,26 @@
         "64": "assets/icon/icon.svg",
         "128": "assets/icon/icon.svg"
     },
-    "applications": {
+    "browser_specific_settings": {
         "gecko": {
             "id": "{15060491-2b35-49f4-9f01-f35b127bebcc}",
-            "strict_min_version": "57.0"
-      }
+            "strict_min_version": "128.0"
+        },
+        "gecko_android": {
+            "strict_min_version": "128.0"
+        }
     },
-    "content_scripts":[
+    "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "css": ["inject/cs.css"],
-            "js": ["inject/cs.js"]
+            "matches": [
+                "<all_urls>"
+            ],
+            "css": [
+                "inject/cs.css"
+            ],
+            "js": [
+                "inject/cs.js"
+            ]
         }
     ],
     "options_ui": {
@@ -45,7 +59,14 @@
         "page": "settings/settings.html?"
     },
     "web_accessible_resources": [
-        "beep.wav"
+        {
+            "resources": [
+                "beep.wav"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
     ],
     "default_locale": "en"
 }

@@ -1,275 +1,341 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="../assets/icon/icon.png">
-        <title>Session Alive Settings</title>
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
-        <!-- Custom CSS -->
-        <link rel="stylesheet" href="settings.css">
-    </head>
-    <body>
-        <div class="wrapper">
-            <!-- Sidebar Holder -->
-            <nav id="sidebar">
-                <div class="sidebar-header">
-                    <img id="icon" src="../assets/icon/icon.svg" width="32px" height="32px">
-                    <img id="preferences" src="../assets/settings/preferences-16-macos.svg" width="32px" height="32px">
-                    <span>Session Alive Settings</span>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../assets/icon/icon.png">
+    <title>Session Alive Settings</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../assets/bootstrap/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="settings.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                <img src="../assets/icon/icon.svg" alt="Session Alive Logo" class="logo">
+                Session Alive
+            </div>
+            <div class="ms-auto d-flex align-items-center">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="themeSwitch">
+                    <label class="form-check-label text-white" for="themeSwitch">Dark Mode</label>
                 </div>
-                <!-- Rule Lisiting Holder -->
-                <ul id="rule-listing" class="list-unstyled components">
-                    <li>
-                        <a href="#">Rule 1</a>
-                    </li>
-                </ul>
-                <!-- Add Rule Holder -->
-                <ul class="list-unstyled CTAs">
-                    <li><a id="add-new-rule" href="#" class="create-rule"><img src="../assets/settings/new-16.svg" width="16px" height="16px"><span> Add New Rule</span></a></li>
-                </ul>
-            </nav>
-            <!-- Page Content Holder -->
-            <div id="collapse-div"><button type="button" id="sidebar-collapse">&laquo;</button></div>
-            <div id="content" class="container-fluid">
-                <div class="row">
-                    <div id="rule-info" class="col-12 col-md-9 alert alert-info">
-                        Select a Rule to edit or<br>
-                        Click "Add New Rule" button to add a new rule.
+            </div>
+        </div>
+    </nav>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h5>Existing Rules</h5>
+        <div id="rulesList">
+            <div class="rule-item">Rule 1</div>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Rule Management -->
+                <div class="col-lg-8">
+                    <h2 class="mb-4">Manage Rules</h2>
+                    <div id="alertContainer"></div>
+                    <div class="alert alert-info d-none" id="save-success-next-step">
+                        <span class="badge rounded-pill text-bg-success">Next Step:</span>
+                        Navigate to the
+                        <a id="trigger_uri_link" href="#" class="alert-link" target="_blank">Trigger URL
+                            <img class="bg-white" src="../assets/settings/Open.svg" width="14px" height="14px" style="height: 0.7em; vertical-align: top;"></a>
+                        to start the Rule.
                     </div>
-                    <div id="save-success" class="col-12 col-md-9 alert alert-success">
-                        <strong>Success!</strong>
-                        <p>Rule saved successfully.</p>
-                        <hr>
-                        <p id="save-success-next-step"><span class="badge badge-pill badge-info">Next Step:</span> Navigate to <a id="trigger_uri_link" href="#" class="alert-link" target="_blank">Trigger URL <img src="../assets/settings/Open.svg" width="14px" height="14px"></a> to start the Rule.</p>
-                    </div>
-                    <div id="delete-success" class="col-12 col-md-9 alert alert-danger">
-                        <strong>Success!</strong> Rule deleted successfully.
-                    </div>
-                <div id="rule-editor" class="col-12 col-md-9">
-                    <nav id="rule-editor-header" class="navbar navbar-default">Header</nav>
-                    <form id="rule-editor-form" class="needs-validation" novalidate="">
-                        <div id="accordion">
-                            <div class="card mb-2">
-                                <div class="card-header" id="settings-name">Rule Details</div>
-                                <div class="collapse show">
-                                    <div class="card-body form-group mb-0">
-                                        <input type="hidden" class="form-control" id="rule_id">
-                                        <label for="rule_name" class="mb-0">Rule Name:</label>
-                                        <input type="text" class="form-control" id="rule_name" required="required" placeholder="Rule Name" maxlength="30">
-                                        <div class="invalid-feedback">Valid rule name is required.</div>
-                                        <div class="text-secondary small">Give a short name for the Rule.</div>
-                                        <div class="input-group pt-3 mb-0">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="disable_rule">
-                                                </div>
-                                            </div>
-                                            <div class="form-control text-danger"> Disable the Rule.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-header" id="settings-background">Background Request Options</div>
-                                <div class="collapse show">
-                                    <div class="card-body form-group mb-0">
-                                        <label for="trigger_uri" class="mb-0">Trigger URL: <span class="badge badge-pill badge-info">asterisk (*) wildcard is supported</span></label>
-                                        <input type="text" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="(https?://.+).{3,}">
-                                        <div id="trigger_uri_fb" class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
-                                        <div class="text-secondary small">Navigating to this URL will start the background request loop.</div>
-
-                                        <label for="loop_uri"  class="pt-3 mb-0">Background Request URL: <span class="badge badge-pill badge-info">Optional</span></label>
-                                        <input type="url" class="form-control" id="loop_uri" placeholder="Optional Background Request URL. eg: https://myapp.com/options" pattern="(https?://.+).{3,}">
-                                        <div class="invalid-feedback">Valid background request URL (including "http://" or "https://") is required.</div>
-                                        <div class="text-secondary small">Optional. If not supplied Trigger URL will be used as Background request URL.</div>
-
-                                        <label for="loop_interval"  class="pt-3 mb-0">Request Interval (in minutes):</label>
-                                        <input type="number" class="form-control" id="loop_interval" required="required" placeholder="Request Interval" maxlength="3" min="1" max="999">
-                                        <div class="invalid-feedback">Valid Request Interval (in minutes) is required.</div>
-                                        <div class="text-secondary small">Request interval for the background request loop. Minimum 1 minute and whole numbers only.</div>
-                                        <div class="input-group pt-3 mb-0">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="loop_exit_200">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Stop Background Request when server response is not 200 OK.</div>
-                                        </div>
-                                        <div class="text-secondary text-justify small">The response from server may indicate that the session is already expired.</div>
-                                        <div class="input-group pt-3 mb-0">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="bg_head_only">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Request Page header information (HEAD Request) only.</div>
-                                        </div>
-                                        <div class="text-secondary text-justify small">Enable this if JavaScript executed from background requests are interfering with the page.</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-2" style="display: none;/*TODO: Background Request Advanced Options*/" >
-                                <div class="card-header" id="settings-bg-advanced">Background Request Advanced Options <span class="badge badge-pill badge-info float-right">Optional</span></div>
-                                <div id="accordion-settings-bg-advanced" class="collapse">
-                                    <div class="card-body form-group mb-0">
-                                        <label for="js_inject" class="mb-0">JavaScript code to insert to the page:</label>
-                                        <textarea class="form-control" rows="3" id="js_inject"></textarea>
-                                        <div class="text-secondary text-justify small">Some websites implement a JavaScript idle timer in the browser. If you know how the JavaScript works in the page, executing a small JavaScript code can reset the idle timer, for eg: <code>leftTime=20; idleTime=0; clearTimeout(idle-timer);</code> The supplied JavaScript code is inserted to the page and executed. This option requires a minimum knowledge of web programming to be able to properly use it.<br>Leave it blank if not required. Trigger URL is required along with this code.</div>
-                                        
-                                        <label for="js_trigger_uri" class="pt-3 mb-0">JavaScript Inject Trigger URL: </label>
-                                        <input type="url" class="form-control" id="js_trigger_uri" placeholder="JavaScript Inject Trigger URL. eg: https://example.com/user/" pattern="https?://.+">
-                                        <div class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
-                                        <div class="text-secondary text-justify small">The supplied JavaScript code will be inserted to all pages with URL starting with the Trigger URL. For example Trigger URL is set to <code>https://example.com/user/</code>, the supplied JavaScript code is inserted and executed to pages <code>https://example.com/user/profile</code> or <code>https://example.com/user/account/details</code> on any tab of the browser window.</div>
-
-                                        <label for="remove_cookies" class="pt-3 mb-0">Cookies to remove from Server Response:</label>
-                                        <textarea class="form-control" rows="3" id="remove_cookies"></textarea>
-                                        <div class="text-secondary text-justify small">Cookies received from background requests may interfere with the page. Enter the names of the cookies separated by a comma, to remove from the server response. Leave it blank if not required.</div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-header" id="settings-foreground">Foreground Request Options <span class="badge badge-pill badge-info float-right">Optional</span></div>
-                                <div id="accordion-settings-foreground" class="collapse">
-                                    <div class="card-body form-group mb-0">
-                                        <label for="fg_trigger_uri" class="mb-0">Foreground Auto-Reload Trigger URL:</label>
-                                        <input type="url" class="form-control" id="fg_trigger_uri" placeholder="Foreground Auto-Reload Trigger URL. eg: https://example.com/user/" pattern="https?://.+">
-                                        <div id="fgTriggerUriFb" class="invalid-feedback">Valid trigger URL (including "http://" or "https://") is required.</div>
-                                        <div class="text-secondary text-justify small">Some websites implement a JavaScript idle timer. For these websites, requesting the page in the background will not be enough to keep the session alive. The page needs to reload to keep the session. Navigating to a any URL starting with the Trigger URL will start the foreground page reload loop. For example Trigger URL is set to <code>https://example.com/user/</code>, navigating to <code>https://example.com/user/profile</code> or <code>https://example.com/user/account/details</code> will set to auto reload in the set interval</div>
-
-                                        <label for="fg_interval"  class="pt-3 mb-0">Foreground Auto-Reload Interval (in minutes):</label>
-                                        <input type="number" class="form-control" id="fg_interval" placeholder="Foreground Auto-Reload Interval" maxlength="3" min="1" max="999">
-                                        <div class="invalid-feedback">Valid Foreground Auto-Reload Interval (in minutes) is required.</div>
-                                        <div class="text-secondary small">Foreground Auto-Reload interval for the foreground auto-reload loop. Minimum 1 minute and whole numbers only.</div>
-
-                                        <div class="input-group pt-3">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="fg_reload_sound">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Play beep sound before reloading page.</div>
-                                            <div class="input-group-append">
-                                                <button type="button" class="input-group-text btn btn-info btn-sm" id="sound_test"><img src="../assets/settings/play-16.svg" width="24px" height="24px"> Test</button>
-                                            </div>
-                                            <audio id="sound_element"><source src="../beep.wav" type="audio/wav"></audio>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-2">
-                                <div class="card-header" id="settings-notifications">Notification Options <span class="badge badge-pill badge-info float-right">Optional</span></div>
-                                <div id="accordion-settings-notifications" class="collapse">
-                                    <div class="card-body form-group mb-0">
-                                        <div><p>Display a browser notification when&hellip;</p></div>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="notif_bgrequest">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Background Page request successful to keep session alive.</div>
-                                        </div>
-                                        <div class="input-group pt-3">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="notif_bgexit">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Background Request is stopped because server response is not 200.</div>
-                                        </div>
-                                        <div class="input-group pt-3">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="notif_fgreload">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Page is auto-reloading to keep session alive.</div>
-                                        </div>
-                                        <div class="input-group pt-3">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="checkbox" id="notif_fgexit">
-                                                </div>
-                                            </div>
-                                            <div class="form-control"> Foreground Page auto-reload stopped.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-primary mr-3" type="submit" id="save_rule">Save Rule</button>
-                                <button class="btn btn-danger" type="button" id="delete_rule">Delete Rule</button>
-                            </div>
+                    <button class="btn btn-primary mb-4" id="addNewRuleButton">Add New Rule</button>
+                    <!-- Help Card -->
+                    <div class="card info-card mb-2" id="helpCard">
+                        <div class="card-body">
+                            <h5 class="card-title">Help & Info</h5>
+                            <p class="card-text">
+                                Manage your rules to keep your Session Alive!:
+                            </p>
+                            <ul>
+                                <li><strong>Rule Name</strong>: Enter a descriptive name to identify your rule.</li>
+                                <li><strong>Trigger URL</strong>: When visited, this URL starts the background request process.</li>
+                                <li><strong>Request Interval</strong>: Specify how often background requests should be made.</li>
+                            </ul>
+                            <p>
+                                Click a rule in the sidebar to edit or delete it, or use the "Add New Rule" button to create a new one.
+                            </p>
                         </div>
-                    </form>
+                    </div>
+                    <!-- Rule Add/ Edit form -->
+                    <div class="card mb-2 d-none" id="ruleFormCard">
+                        <div class="card-body">
+                            <h5 class="card-title" id="formTitle">Add New Rule</h5>
+                            <form id="ruleForm" class="needs-validation" novalidate="">
+                                <div class="accordion mb-2" id="accordionRuleDetails">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                Rule Details
+                                            </button>
+                                        </div>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionRuleDetails">
+                                            <div class="accordion-body">
+                                                <input type="hidden" class="form-control" id="rule_id">
+                                                <label for="rule_name" class="mb-0">Rule Name:</label>
+                                                <input type="text" class="form-control" id="rule_name" required="required" placeholder="Rule Name" maxlength="30">
+                                                <div class="invalid-feedback">Valid rule name is required.</div>
+                                                <div class="text-secondary small">Give a short name for the Rule.</div>
+                                                <div class="input-group pt-3 mb-0">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="disable_rule">
+                                                    </div>
+                                                    <div class="form-control input-group-text">
+                                                        <div class="text-danger"> Disable the Rule.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion mb-2" id="accordionBackground">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                                Background Request Options
+                                            </button>
+                                        </div>
+                                        <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionBackground">
+                                            <div class="accordion-body">
+                                                <label for="trigger_uri" class="mb-0">Trigger URL: <span class="badge rounded-pill text-bg-info">asterisk (*) wildcard is
+                                                        supported</span></label>
+                                                <input type="text" class="form-control" id="trigger_uri" placeholder="Trigger URL. eg: https://myapp.com/welcome" required="required" pattern="(https?://.+).{3,}">
+                                                <div id="trigger_uri_fb" class="invalid-feedback">Valid trigger URL
+                                                    (including "http://" or "https://") is required.</div>
+                                                <div class="text-secondary small">Navigating to this URL will start the
+                                                    background request loop.</div>
+
+                                                <label for="loop_uri" class="pt-3 mb-0">Background Request URL: <span class="badge rounded-pill text-bg-info">Optional</span></label>
+                                                <input type="url" class="form-control" id="loop_uri" placeholder="Optional Background Request URL. eg: https://myapp.com/options" pattern="(https?://.+).{3,}">
+                                                <div class="invalid-feedback">Valid background request URL (including
+                                                    "http://" or "https://") is required.</div>
+                                                <div class="text-secondary small">Optional. If not supplied Trigger URL
+                                                    will be used as Background request URL.</div>
+
+                                                <label for="loop_interval" class="pt-3 mb-0">Request Interval (in
+                                                    minutes):</label>
+                                                <input type="number" class="form-control" id="loop_interval" required="required" placeholder="Request Interval" maxlength="3" min="1" max="999">
+                                                <div class="invalid-feedback">Valid Request Interval (in minutes) is
+                                                    required.</div>
+                                                <div class="text-secondary small">Request interval for the background
+                                                    request loop. Minimum 1 minute and whole numbers only.</div>
+                                                <div class="input-group pt-3 mb-0">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="loop_exit_200">
+                                                    </div>
+                                                    <div class="form-control"> Stop Background Request when server
+                                                        response is not 200 OK.</div>
+                                                </div>
+                                                <div class="text-secondary text-justify small">The response from server
+                                                    may indicate that the session is already expired.</div>
+                                                <div class="input-group pt-3 mb-0">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="bg_head_only">
+                                                    </div>
+                                                    <div class="form-control"> Request Page header information (HEAD
+                                                        Request) only.</div>
+                                                </div>
+                                                <div class="text-secondary text-justify small">Enable this if JavaScript
+                                                    executed from background requests are interfering with the page.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion mb-2" id="accordionForeground">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                                <span class="badge rounded-pill text-bg-info me-2">Optional</span>
+                                                Foreground Request Options
+                                            </button>
+                                        </div>
+                                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionForeground">
+                                            <div class="accordion-body">
+                                                <label for="fg_trigger_uri" class="mb-0">Foreground Auto-Reload Trigger
+                                                    URL:</label>
+                                                <input type="url" class="form-control" id="fg_trigger_uri" placeholder="Foreground Auto-Reload Trigger URL. eg: https://example.com/user/" pattern="https?://.+">
+                                                <div id="fgTriggerUriFb" class="invalid-feedback">Valid trigger URL
+                                                    (including "http://" or "https://") is required.</div>
+                                                <div class="text-secondary text-justify small">Some websites implement a
+                                                    JavaScript idle timer. For these websites, requesting the page in
+                                                    the background will not be enough to keep the session alive. The
+                                                    page needs to reload to keep the session. Navigating to a any URL
+                                                    starting with the Trigger URL will start the foreground page reload
+                                                    loop. For example Trigger URL is set to
+                                                    <code>https://example.com/user/</code>, navigating to
+                                                    <code>https://example.com/user/profile</code> or
+                                                    <code>https://example.com/user/account/details</code> will set to
+                                                    auto reload in the set interval
+                                                </div>
+
+                                                <label for="fg_interval" class="pt-3 mb-0">Foreground Auto-Reload
+                                                    Interval (in minutes):</label>
+                                                <input type="number" class="form-control" id="fg_interval" placeholder="Foreground Auto-Reload Interval" maxlength="3" min="1" max="999">
+                                                <div class="invalid-feedback">Valid Foreground Auto-Reload Interval (in
+                                                    minutes) is required.</div>
+                                                <div class="text-secondary small">Foreground Auto-Reload interval for
+                                                    the foreground auto-reload loop. Minimum 1 minute and whole numbers
+                                                    only.</div>
+
+                                                <div class="input-group pt-3">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="fg_reload_sound">
+                                                    </div>
+                                                    <div class="form-control"> Play beep sound before reloading page.
+                                                    </div>
+                                                    <button type="button" class="input-group-text btn btn-info btn-sm" id="sound_test"><img src="../assets/settings/play-16.svg" width="24px" height="24px"> Test</button>
+                                                    <audio id="sound_element">
+                                                        <source src="../beep.wav" type="audio/wav">
+                                                    </audio>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion mb-2" id="accordionNotifications">
+                                    <div class="accordion-item">
+                                        <div class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                                                <span class="badge rounded-pill text-bg-info me-2">Optional</span>
+                                                Notification Options
+                                            </button>
+                                        </div>
+                                        <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionNotifications">
+                                            <div class="accordion-body">
+                                                <div>
+                                                    <p>Display a browser notification when&hellip;</p>
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="notif_bgrequest">
+                                                    </div>
+                                                    <div class="form-control"> Background Page request successful to
+                                                        keep session alive.</div>
+                                                </div>
+                                                <div class="input-group pt-3">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="notif_bgexit">
+                                                    </div>
+                                                    <div class="form-control"> Background Request is stopped because
+                                                        server response is not 200.</div>
+                                                </div>
+                                                <div class="input-group pt-3">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="notif_fgreload">
+                                                    </div>
+                                                    <div class="form-control"> Page is auto-reloading to keep session
+                                                        alive.</div>
+                                                </div>
+                                                <div class="input-group pt-3">
+                                                    <div class="input-group-text">
+                                                        <input type="checkbox" id="notif_fgexit">
+                                                    </div>
+                                                    <div class="form-control"> Foreground Page auto-reload stopped.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="submitButton">Add Rule</button>
+                                <button type="button" class="btn btn-danger" id="deleteButton" style="display: none;">Delete Rule</button>
+                                <button type="button" class="btn btn-secondary" id="cancelButton">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12 col-md-3">
-                    <div class="card small mb-2">
+                <!-- Info Card -->
+                <div class="col-lg-4">
+                    <div class="card info-card mb-2">
                         <div class="card-header text-center"><strong>Rules Import/ Export</strong></div>
                         <div class="card-body">
                             <p class="card-text">
-                                To import rules, click Import Rules. Select a valid <code>.json</code> file to import.</br>
-                                To export rules, click Export Rules. Exported data is downloaded as a file with extension <code>.json</code>.
+                                To import rules, click Import Rules. Select a valid <code>.json</code> file to
+                                import.</br>
+                                To export rules, click Export Rules. Exported data is downloaded as a file with
+                                extension <code>.json</code>.
                             </p>
-                            <div class="form-group row">
+                            <div class="row">
                                 <div class="col-sm-6">
                                     <input type="file" id="fileElem" accept=".json" style="display:none" />
-                                    <button class="btn btn-danger float-left" type="button" id="import_rules_json">Import Rules</button>
+                                    <button class="btn btn-danger float-start" type="button" id="import_rules_json">Import Rules</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <button class="btn btn-primary float-right" type="button" id="export_rules_json">Export Rules</button>
+                                    <button class="btn btn-primary float-end" type="button" id="export_rules_json">Export Rules</button>
                                 </div>
-                                <fieldset class="col-sm-11 border mx-auto p-2"><legend class="col-form-label w-auto">Import type:&nbsp;</legend>
-                                  <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="importType" id="import_replace" value="option1" checked>
-                                    <label class="form-check-label" for="import_replace"> Replace </label>
-                                  </div>
-                                  <div class="form-check-inline">
-                                    <input class="form-check-input" type="radio" name="importType" id="import_append" value="option2">
-                                    <label class="form-check-label" for="import_append"> Append </label>
-                                  </div>
+                                <fieldset class="col-sm-11 border mx-auto p-2">
+                                    <legend class="col-form-label float-none w-auto">Import type:&nbsp;</legend>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="importType" id="import_replace" value="option1" checked>
+                                        <label class="form-check-label" for="import_replace"> Replace </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="importType" id="import_append" value="option2">
+                                        <label class="form-check-label" for="import_append"> Append </label>
+                                    </div>
                                 </fieldset>
-                              </div>
-                        </div> 
+                            </div>
+                        </div>
                     </div>
-                    <div class="card small mb-2">
+
+                    <div class="card info-card mb-2">
                         <div class="card-header text-center"><strong>Release Notes</strong></div>
                         <div class="card-body">
                             <ul class="list-unstyled">
-                                <li><strong>2.3</strong>
+                                <li><strong>2.4</strong>
                                     <ul class="list-unstyled">
-                                        <li><strong>New Feature:</strong> Google chrome browser is now supported. Install from <a href="https://chrome.google.com/webstore/detail/session-alive/aodfoiacnmepndhojccepdcpmehjbham" target="_blank" class="text-info">Chrome Web Store</a></li>
-                                        <li><strong>New Feature:</strong> Rules Import/ Export option. </li>
-                                        <li>Minor code changes for porting to Manifest Version 3 to support Google chrome browser</li>
+                                        <li><strong>New Feature:</strong> Dark Theme - Automatically adapts to your
+                                            system's appearance settings. </li>
+                                        <li><strong>Improvement:</strong> Automatically generates rule name based on
+                                            the page title.</li>
+                                        <li><strong>Upgrade:</strong> Bootstrap updated to the latest version. </li>
+                                        <li><strong>Improvement:</strong> Improved overall performance. </li>
+                                        <li><strong>Improvement:</strong> Add Swedish (sv) language. Thank you 
+                                            <a href="https://github.com/Sopor" target="_blank" class="text-info">Sopor</a> for your 
+                                            <a href="https://github.com/arunelias/session-alive/pull/44" target="_blank" class="text-info">support.</a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
-                        </div> 
-                        <div class="card-footer text-center"><a href="https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/versions/" class="card-link text-info" title="Release Notes for the Older Versions">Older Versions</a></div>
+                        </div>
                     </div>
-                    <div class="card small mb-2">
+
+                    <div class="card info-card mb-2">
                         <div class="card-header text-center"><strong>About</strong></div>
                         <div class="card-body">
                             <p class="text-justify">
                                 Session Alive extension is Open Source. Please rate the extension if you like it.<br>
-                                This extension does not collect any user information or data. Please read the Privacy Policy for more details.<br>
-                                If you want to contribute to this project or report an issue please visit the below GitHub page
+                                This extension does not collect any user information or data. Please read the Privacy
+                                Policy for more details.<br>
+                                If you want to contribute to this project or report an issue please visit the below
+                                GitHub page
                             </p>
                             <a href="https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/" class="card-link text-info" title="How are you enjoying Session Alive? Rate your experience!"><span class="Icon Icon-star-yellow"></span></a>
+                            <a href="/views/installed.html" class="card-link text-info" title="Help"><span class="icon-help"></span></a>
                             <a href="https://github.com/arunelias/session-alive" class="card-link text-info" title="Support Site">GitHub</a>
                             <a href="https://docs.google.com/forms/d/e/1FAIpQLSf9gdcJycSTzriZZDWDKcW3JKd8h0dSkO8guvx1LRSAF2LzDQ/viewform?usp=sf_link" class="card-link text-info" title="Help me improve Session Alive by leaving feedback">Feedback</a>
                             <a href="https://addons.mozilla.org/en-US/firefox/addon/keep-session-alive/privacy/" class="card-link text-info" title="Read the privacy policy for this add-on">Privacy Policy</a>
                         </div>
-                        <div class="card-footer text-right">&copy; Arun Elias - 2024</div>
+                        <div class="card-footer text-end">&copy; Arun Elias - 2025</div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
+    <script src="settings.js"></script>
+</body>
 
-        <script src="settings.js"></script>
-    </body>
 </html>
