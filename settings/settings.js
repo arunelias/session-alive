@@ -97,14 +97,22 @@ function showAlert(message) {
     alertDiv.id = alertId;
     alertDiv.className = 'alert alert-success alert-dismissible show';
     alertDiv.role = 'alert';
-    alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" aria-label="Close"></button>
-            `;
+    // Show Success! message in bold and prepend to message
+    const fragment = document.createDocumentFragment();
+    const bold = document.createElement('strong');
+    bold.textContent = 'Success! ';
+    fragment.appendChild(bold);
+    const textNode = document.createTextNode(message);
+    fragment.appendChild(textNode);
+    alertDiv.appendChild(fragment);
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.className = 'btn-close';
+    closeButton.setAttribute('aria-label', 'Close');
+    alertDiv.appendChild(closeButton);
     alertContainer.appendChild(alertDiv);
 
     // Attach close button handler
-    const closeButton = alertDiv.querySelector('.btn-close');
     closeButton.onclick = () => {
         alertDiv.classList.remove('show');
         setTimeout(() => alertDiv.remove(), 300); // Remove after fade-out
@@ -191,7 +199,7 @@ function setItem() {
     const refreshSettings = browser.storage.local.get();
     refreshSettings.then(renderRules, onError).then(function () {
         hideForm();
-        showAlert('<strong>Success!</strong> Rule Saved Successfully.');
+        showAlert('Rule Saved Successfully.');
     });
 }
 
@@ -205,7 +213,7 @@ function removedItem() {
     const refreshSettings = browser.storage.local.get();
     refreshSettings.then(renderRules, onError).then(function () {
         hideForm();
-        showAlert('<strong>Success!</strong> Rule Deleted Successfully.');
+        showAlert('Rule Deleted Successfully.');
     });
 }
 
